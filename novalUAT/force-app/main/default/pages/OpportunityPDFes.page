@@ -1,0 +1,294 @@
+<apex:page showHeader="false" standardController="Opportunity" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" showQuickActionVfHeader="false" renderAs="PDF">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <style type="text/css" media="print">
+        @page {
+            size : portrait ;
+            margin-top: 0.25em;
+            margin-left: 0.25em;
+            margin-right: 0.25em; 
+            margin-bottom: 0.25em; 
+            text-align:center;  
+        }
+        
+        div.footer {
+            position: fixed;
+            width: 100%;
+            bottom: 0.25em;
+            left: 0px; 
+            text-align:center; 
+        }
+        
+        .inputs{
+            background-color:#edf0fb; /* #d3defd; */
+            border-radius: 2px;
+            border: 1px solid #d1d9f1;
+            padding-left:5px;
+            color:black;
+            /* width:100%; */
+        }
+        
+        .labels{
+            color:#8e9bab;
+            font-family: Arial;             /* font-family: monospace; */   
+        }
+        .labels-center{
+            padding-left:5px;
+            color:#8e9bab;
+            font-family: Arial;             /* font-family: monospace; */   
+        }
+        .lines-bottom{
+            padding-bottom:8px;
+            padding-top:3px;
+        }
+        
+        .lines{
+            padding-bottom:8px;
+            padding-top:8px;
+        }
+        table#comision {
+           width: 100%;
+        }
+        table#comision>tr>td {
+            color:#000;
+           text-align: center;
+           vertical-align: top;
+           border: 1px solid #8e9bab;
+           border-collapse: collapse;
+           border-radius: 2px;
+        }
+        table#comision>tr>th{
+           background-color:#5d5e5e;
+           color:white;
+           text-align: center;
+           border-radius: 2px;
+           vertical-align: top;
+           border-collapse: collapse;   
+        }
+        </style> 
+        </head>
+        <body>
+        
+            <!------------------------------ Formulario de Reserva ---------------------->
+            <table width="100%">
+                <tr>
+                    <td width="100%" style="padding-bottom:3px;">
+                        <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_header_reserva.png')}" height="50" width="100%"/>                   
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" class="lines-bottom">
+                        <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_comprador.png')}" height="20" width="100%"/>
+                        <!--- br/>Test Document for Offer No. {!pba__Offer__c.Name}   , Name : {!pba__Offer__c.Offer_Name__c} --->
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%">
+                        <table width="100%">
+                            <tr>
+                                <td class="labels">Nombre&nbsp;: </td>
+                                <td colspan="3" class="inputs">{!Opportunity.Account.Name}</td>
+                                <td class="labels-center">Date of birth :</td>
+                                <td class="inputs"><apex:outputField value="{!Opportunity.psg_Contact__r.Birthdate}"/></td>
+                            </tr>
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Nacionalidad&nbsp;:</td>
+                                <td class="inputs">{!Opportunity.psg_Contact__r.PSG_Global_Nationality__c}</td>
+                                <td class="labels-center">ID / Passport :</td>  
+                                <td class="inputs">{!Opportunity.psg_Contact__r.psg_ID_Passport__c}</td>
+                                <td class="labels-center">Cell phone :</td>
+                                <td class="inputs">{!Opportunity.psg_Contact__r.MobilePhone}</td>
+                            </tr>
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Domicilio&nbsp;:</td>
+                                <td colspan="5" class="inputs">
+                                    {!Opportunity.psg_Contact__r.MailingStreet} {!Opportunity.psg_Contact__r.MailingCity}, 
+                                    {!Opportunity.psg_Contact__r.MailingState} {!Opportunity.psg_Contact__r.MailingPostalCode}. 
+                                    {!Opportunity.psg_Contact__r.MailingCountry}
+                                </td>
+                            </tr>
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Pais&nbsp;:</td>
+                                <td class="inputs">{!Opportunity.psg_Contact__r.MailingCountry}</td>
+                                <td class="labels-center">Email :</td>
+                                <td colspan="3" class="inputs">{!Opportunity.psg_Contact__r.Email}</td>
+                            </tr>
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Profesi&oacute;n :</td>
+                                <td colspan="2" class="inputs">{!Opportunity.psg_Contact__r.psg_Profession__c}</td>
+                                <td class="labels-center">Company :</td>
+                                <td colspan="2" class="inputs">{!Opportunity.psg_Contact__r.Account.Name}</td>         
+                            </tr>
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Web&nbsp;:</td>
+                                <td colspan="2" class="inputs">{!Opportunity.Account.Website}</td>
+                                <td class="labels-center">Phone :</td>
+                                <td colspan="2" class="inputs">{!Opportunity.psg_Contact__r.Phone}</td>
+                            </tr> 
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Casado&nbsp;:</td>
+                                 <td class="inputs">
+                                    <apex:image alt="checked" title="checked" url="{!URLFOR($Resource.pb_pdf, 'image/chb-c.png')}" height="20" width="20" rendered="{!Opportunity.psg_Contact__r.psg_Marital_Status__c == 'Casado'}"/>                                
+                                    <apex:image alt="unchecked" title="unchecked" url="{!URLFOR($Resource.pb_pdf, 'image/chb-u.png')}" height="20" width="20" rendered="{!Opportunity.psg_Contact__r.psg_Marital_Status__c != 'Casado'}"/>
+                                </td>
+                                
+                                <td class="labels-center">Nombre del conyugue&nbsp;:</td>                        
+                                <td colspan="2" class="inputs">{!Opportunity.psg_Contact__r.psg_Spouse__c}</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            
+                            <tr><!-- 6 Columnas por fila, 7 Filas -->
+                                <td class="labels">Domicilio RD&nbsp;:</td>
+                                <td colspan="5" class="inputs"><!--{!pba__Offer__c.Domicilio_RD__c}--></td>
+                            </tr>                   
+                        </table>
+                    </td>
+                </tr>
+                 <!-- 
+                <tr>
+                   
+                        <td width="100%" class="lines">
+                            <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_separador.png')}" height="20" width="100%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100%">
+                            <table width="100%">
+        
+                                <tr>
+                                    <td class="labels">Ejecutivo Noval&nbsp;:</td>
+                                    <td class="inputs">{!Opportunity.Owner.Name}</td>
+                                     <td class="labels-center">Agent&nbsp;:</td>
+                                    <td class="inputs">
+                                    	<apex:image alt="checked" title="checked" url="{!URLFOR($Resource.pb_pdf, 'image/chb-c.png')}" height="20" width="20" rendered="{!Opportunity.psg_Contact__r.RecordType.Name == 'Broker'}"/>                                
+                                    	<apex:image alt="unchecked" title="unchecked" url="{!URLFOR($Resource.pb_pdf, 'image/chb-u.png')}" height="20" width="20" rendered="{!Opportunity.psg_Contact__r.RecordType.Name != 'Broker'}"/>
+                                	</td>
+                                    <td class="inputs">{!Opportunity.psg_Contact__r.psg_Referral_Contact__r.FirstName} {!Opportunity.psg_Contact__r.psg_Referral_Contact__r.MiddleName}</td>
+                                    <td class="labels-center">Agent Email :</td>
+                                    <td class="inputs">{!Opportunity.psg_Agente_Email__c}</td>                        
+                                </tr>
+                            </table>
+                        </td>
+                    </tr> -->
+                <tr>
+                    <td width="100%" class="lines">
+                        <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_separador.png')}" height="20" width="100%"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%">
+                        <table width="100%">
+                            <tr><!-- 10 columns por fila -->
+                                <td class="labels">Proyecto&nbsp;:</td>
+                                 <td colspan="9" class="inputs">{!Opportunity.psg_Related_Project__r.Name}</td>
+                            </tr>  
+                            
+                            <apex:repeat value="{!Opportunity.OpportunityLineItems}" var="item">
+                            <tr>
+                                <td class="labels">Apartamento/villa&nbsp;:</td>
+                                <td class="inputs">{!item.Product2.psg_Unit_Number__c}</td>
+                                <td class="labels-center">Bedrooms :</td>
+                                <td class="inputs">{!item.Product2.psg_Bedrooms__c}</td>
+                                <td class="labels-center">Area :</td>
+                                <td class="inputs">{!item.Product2.psg_Total_Size__c}</td>
+                                <td class="labels-center">Level :</td>
+                                <td class="inputs">{!item.Product2.psg_Unit_Level__c}</td>
+                                <td class="labels-center">Parking :</td>
+                                <td class="inputs">{!item.Product2.psg_Parking_Spaces__c}</td>
+                            </tr>
+                        </apex:repeat>   
+                            
+                            
+                        </table>
+                    </td>
+                </tr>       
+                <tr>
+                    <td width="100%" class="lines">
+                        <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_separador.png')}" height="20" width="100%"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%">
+                        <table width="100%">
+                            <tr>
+                                <td class="labels">Precio&nbsp;:</td>
+                                <td class="inputs">{!Opportunity.Amount}</td>
+                                <td class="labels-center">Booking amount :</td>
+                                <td class="inputs">{!Opportunity.psg_Reservation_Amount__c}</td>
+                                <td class="labels-center">Delivery date :</td>
+                                <td class="inputs"><apex:outputField value="{!Opportunity.psg_Delivery_Date__c}"/></td>
+                            </tr>
+                            
+                            <tr><!-- 6 Columnas por fila-->                     
+                                <td class="labels">Forma de&nbsp;pago&nbsp;:</td>
+                                <td colspan="5" class="inputs" width="100%">
+                                    <textarea rows="3">
+                                        <td colspan="5" class="inputs"><!--{!Desglose_forma_de_pago__c}--></td>
+                                    </textarea>                         
+                                </td>
+                            </tr>
+                            <tr>    
+                                <td class="labels" colspan="6">Condiciones&nbsp;especiales&nbsp;:</td>
+                            </tr>
+                            <tr>
+                                <td class="labels" colspan="6" style="width:100%;padding-top:5px;">
+                                    <div class="inputs" style="min-height:30px;"><!--{!Condiciones_especiales__c}--></div>
+                                </td>
+                            </tr>
+                            <tr><td colspan="6">&nbsp;</td></tr>
+                            <tr><!-- 6 Columnas por fila -->        
+                                <td colspan="6" class="labels" width="100%" style="font-size:9pt;">*Esta reserva quedará anulada si no se realiza el pago correspondiente dentro de los tres días hábiles siguientes a la fecha de la firma.</td>
+                            </tr>   
+                            <tr><td colspan="6">&nbsp;</td></tr>
+                            <tr><!-- 6 Columnas por fila -->        
+                                <td colspan="6" class="labels" width="100%" style="font-size:11pt;text-align:center;">*Firmado y Aceptado por:</td>
+                            </tr>                   
+                        </table>
+                    </td>
+                </tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <tr>
+                    <td width="100%" class="lines">
+                        <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_firmas.png')}" height="20" width="100%"/>
+                    </td>
+                </tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <tr>
+                    <td width="100%" >
+                        <table width="30%" align="center">
+                            <tr>
+                                <td class="labels" width="30%">Fecha&nbsp;:</td>
+                                <td class="inputs" width="70%"><apex:outputField value="{!Opportunity.CloseDate}"/></td>
+                            </tr>               
+                        </table>
+                    </td>       
+                </tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <!-- tr><td width="100%">&nbsp;</td></tr -->
+                <!-- tr><td width="100%">&nbsp;</td></tr>
+                <tr><td width="100%">&nbsp;</td></tr>
+                <tr><td width="100%">&nbsp;</td></tr -->
+                <tr>
+                    <td class="labels" width="100%" style="font-size:11pt;padding-left:25px;">CONDICIONES GENERALES:</td>
+                </tr>
+                <tr>
+                    <td class="labels" width="100%" style="font-size:9pt;">- El importe recibido en concepto de reserva no es reembolsable y será deducido del valor total del inmueble.</td>
+                </tr>
+                <tr>
+                    <td class="labels" width="100%" style="font-size:9pt;">- En caso de que no se firme la promesa de venta dentro de los 30 días siguientes a la fecha de la reserva esta quedará cancelada.</td>
+                </tr>       
+            </table>
+            <!--- Fin Formulario Reserva --->
+            
+            <!--- Footer --->
+            <div class="footer">
+                <apex:image alt="eye" title="eye" url="{!URLFOR($Resource.pb_pdf, 'image/pb_footer.png')}" height="50" width="97%"/>
+            </div>   
+             
+        </body>
+    
+</apex:page>

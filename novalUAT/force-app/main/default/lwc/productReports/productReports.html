@@ -1,0 +1,52 @@
+<template>
+    <div class="main-card">
+        <div class="layout">
+
+            <div class="sidebar" style="margin-top: 27px;">
+                <h2>Filtros</h2>
+                <h2>Filtros1 </h2>
+                <h2>Filtros3 </h2>
+                <h2>Filtros4 </h2>
+                <h2>Filtros</h2>
+
+            </div>
+
+            <div class="main-content">
+
+                <div class="container">
+
+                    <div class="table-header">
+                        <div>Images</div>
+                        <div>TITLE / ADDRESS</div>
+                        <div>STATUS</div>
+                        <div>PRODUCT PRICE</div>
+                        <div>PRODUCT TYPE</div>
+                        <div>YEAER BUILT</div>
+                        <div>BEDROOMS</div>
+                        <div>BATHROOM</div>
+                        <div>NET SIZE</div>
+                    </div>
+                    <template for:each={products} for:item="product">
+                        <div key={product.id} class="product-card fade-in" style="animation-delay: 0.2s">
+                            <div class="image-placeholder">IMG</div>
+                            <div class="product-info">
+                                <div class="name">{product.name}</div>
+                                <div class="category">{product.category}</div>
+                            </div>
+                            <div class="status">
+                                <span class={product.statusClass}>{product.status}</span>
+                            </div>
+                            <div class="price">$PRODUCT PRICE</div>
+                            <div class="product-type">PRODUCT TYPE</div>
+                            <div class="year-built">EAER BUILT</div>
+                            <div class="bedrooms">BEDROOMS</div>
+                            <div class="bathrooms">BATHROOM</div>
+                            <div class="size">NET SIZE</div>                           
+                        </div>
+                    </template>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>

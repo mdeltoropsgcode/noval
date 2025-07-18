@@ -1,0 +1,25 @@
+.success-container {
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    background-color: #dff0d8;
+    border-radius: 0.25rem;
+    border: 1px solid #d6e9c6;
+    max-width: 600px;
+    width: 100%;
+}
+
+.success-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.slds-theme_success {
+    color: #3c763d;
+}
+
+h2.slds-text-heading_medium {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}

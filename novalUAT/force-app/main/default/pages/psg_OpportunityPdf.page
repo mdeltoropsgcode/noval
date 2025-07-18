@@ -1,0 +1,7 @@
+<apex:page showHeader="false" standardController="Opportunity" extensions="psg_OpptyExtension" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" showQuickActionVfHeader="false" action="{!getCommissions}" renderAs="PDF">
+
+    
+
+
+
+</apex:page>

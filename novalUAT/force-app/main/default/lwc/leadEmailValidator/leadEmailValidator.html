@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="Buscar Lead por Email">
+        <div class="slds-p-horizontal_medium">
+            <lightning-input label="Correo Electrónico" value={email} onchange={handleInputChange}></lightning-input>
+            <lightning-button label="Buscar" onclick={handleSearch} class="slds-m-top_small"></lightning-button>
+
+            <template if:true={resultMessage}>
+                <p class={resultClass} style="margin-top: 1rem;">{resultMessage}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

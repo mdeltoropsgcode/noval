@@ -1,0 +1,238 @@
+<apex:page standardController="Opportunity" lightningStylesheets="true" extensions="PaymentPlanController" docType="html-5.0" language="en_US">
+
+     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" />
+    <apex:form id="myForm">
+        <apex:pageBlock title="Plan de pagos">
+            <apex:actionFunction name="dataChangedAction" action="{!dataChanged}" rerender="pageButtons"/>
+            <apex:actionFunction name="pagosChangedAction" action="{!paymentsChanged}" rerender="pageButtons"/>
+            <apex:actionFunction name="calculateAction" action="{!calculate}" rerender="pageButtons,myForm,post_processing"/>
+            <!-- ERROR ALERT DIV -->
+            <apex:outputPanel layout="block" id="msg_block" style="display: none;">
+                <div id="err_wrapper"
+                     class="slds-notify slds-notify--alert slds-theme--{!alertType} slds-theme--alert-texture"
+                     role="alert">
+                    <h2>
+                        <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <svg aria-hidden="true"
+                                 class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                                
+                                <!--1 line comentada-->
+                              <!--  <use xlink:href="{!URLFOR($Resource.SLDS, '/icons/utility-sprite/svg/symbols.svg#' + if(alertType = 'success','check','ban'))}"></use>-->
+                            </svg>
+                            <span id="err_text"></span>
+                        </div>
+                    </h2>
+                </div>
+            </apex:outputPanel>
+            
+            <apex:pageBlockButtons location="top">
+                <apex:outputPanel layout="none" id="pageButtons">
+                    <apex:commandButton value="Calcular" onclick="onClickCalcular(); return false;" rerender="myForm,post_processing"/>
+                    <apex:commandButton action="{!save}" value="Guardar" onclick="showLoadingCircle();" disabled="{!If(IsPagosChanged,false,OR(NOT(Calculated),IsDataChanged,IsSaved))}" reRender="msg_block,post_processing,myModal"/>
+                    <apex:commandButton action="{!quickSave}" value="Guardado rapido" disabled="{!If(IsPagosChanged,false,OR(NOT(Calculated),IsDataChanged,IsSaved))}" reRender="msg_block,post_processing,myModal,myForm,LoadingCircle" onclick="showLoadingCircle();"/>
+                    <apex:commandButton value="Generar PDF" disabled="{!OR(NOT(IsSaved),IsDataChanged,IsPagosChanged,NOT(Calculated))}" oncomplete="showPDF();" status="status" reRender="msg_block,post_processing,myModal"/>
+                    <apex:commandButton action="{!cancel}" value="Cancelar" immediate="true" html-formnovalidate="formnovalidate" />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Información General">
+               <!-- 2 da Lineas Comentada------------------------------------------------------------------------------------------------------------>                                
+                <apex:outputField value="{!Opportunity.psg_Contact__c}" label="Cliente"/>
+                <apex:outputField value="{!Opportunity.psg_Related_Project__r.Name}" label="Proyecto"/> <!--1)chancge-->
+                <apex:outputText value="{!total}" label="Precio de Compra"/>
+                <!--<apex:outputText value="{!IF(ISBLANK(Opportunity.psg_Related_Project__c), '', Opportunity.psg_Related_Project__r.psg_Delivery_Date__c)}" label="Fecha de entrega" />-->
+             <apex:outputField value="{!Opportunity.psg_Related_Project__r.psg_Delivery_Date__c}" label="Fecha de entrega"/> <!--2)chancge-->                
+                <apex:outputField value="{!Opportunity.CloseDate}" label="Fecha de compra"/>
+                <apex:inputField value="{!PaymentPlan.psg_Initial__c }" label="Inicial" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>                
+           <!-- <apex:inputField value="{!PaymentPlan.psg_Intermediate__c}" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/> --> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="intermedio" value="Intermedio" />
+                    <apex:inputText id="intermedio" value="{!PaymentPlan.psg_Intermediate__c}" onchange="dataChangedAction();" onkeyup="dataChangedAction();" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!PaymentPlan.psg_Final__c}" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>
+            <!------------------Por ejecutar-------------------------------------------------------->
+           </apex:pageBlockSection>      
+            
+            <apex:pageBlockSection title="Inicial">                                                  
+           		<apex:inputField value="{!PaymentPlan.psg_Reservation__c}" label="Valor de Reserva" required="true" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>   
+                <apex:inputField value="{!PaymentPlan.psg_Days_to_Complete_Initial_Payment__c}" label="Días Para Completar Inicial" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>                
+                <apex:inputField value="{!PaymentPlan.psg_Initial_Payment_Installments__c}" label="Cuotas del inicial"/>                              
+                <apex:inputField value="{!PaymentPlan.psg_Notes__c}" label="Notas" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>
+            </apex:pageBlockSection>  
+            
+            <apex:pageBlockSection title="Intermedio">                  
+                <apex:inputField value="{!PaymentPlan.psg_First_Payment_Date__c}" label="Fecha de primer pago"/>
+                <apex:inputField value="{!PaymentPlan.psg_Months_Interval_for_Construction_Pay__c}" label="¿Cada cuantos meses el cliente realizará sus pagos?" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>                                
+                <apex:inputField value="{!PaymentPlan.psg_Number_of_Payments_During_Constructi__c}" label="Número de pagos durante la construcción" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>                
+                <apex:inputField value="{!PaymentPlan.psg_Notes__c}" label="Notas" onchange="dataChangedAction();" onkeyup="dataChangedAction();"/>
+            </apex:pageBlockSection>          
+                           
+               <!--mi code-->
+              <apex:pageBlockSection title="Información Adicional">
+                <apex:selectList value="{!PaymentPlan.psg_Initial_Divided__c}" label="Inicial dividido">
+                    <apex:selectOption itemValue="Si" itemLabel="Si"/>
+                    <apex:selectOption itemValue="No" itemLabel="No"/>
+                </apex:selectList>
+                </apex:pageBlockSection>
+               
+                  <!--fin code-->          
+                  
+            
+        </apex:pageBlock>        
+        <apex:pageBlock title="Pagos" rendered="{!Calculated}">
+            <apex:pageBlockTable value="{!Payments}" var="Payment">
+                <apex:column value="{!Payment.psg_Description__c}">
+                    <apex:facet name="footer"><b>TOTAL</b></apex:facet>
+                </apex:column>
+                
+            <!--    <apex:column value="{!Payment.psg_Payment__c}" title="Monto">
+                    <apex:facet name="footer">
+                        <b>USD {!total}</b>
+                    </apex:facet>
+                </apex:column>  -->                				
+                <apex:column title="Monto">                    
+                    <apex:outputText value="USD {0,number,#,##0.00}">
+                            <apex:param value="{!Payment.psg_Payment__c}" />
+                        </apex:outputText>                    
+               		<apex:facet name="footer">
+                   		 <b>USD {!total}</b>
+                	</apex:facet>
+            </apex:column>
+
+                              
+                <apex:column value="{!Payment.psg_Percentages__c}">
+                    <apex:facet name="footer"><b>100.00%</b></apex:facet>
+                </apex:column>
+                <apex:column title="Fecha">
+                    <apex:outputPanel layout="none" rendered="{!CONTAINS(Payment.psg_Description__c,'Resto del inicial')}">
+                        <apex:inputField value="{!Payment.psg_Payment_Date__c}" onchange="pagosChangedAction();" onkeyup="pagosChangedAction();"/>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="none" rendered="{!NOT(CONTAINS(Payment.psg_Description__c,'Resto del inicial'))}">
+                        <apex:outputField value="{!Payment.psg_Payment_Date__c}"/>
+                    </apex:outputPanel>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+        <!-- Loading Circle -->
+        <div id="LoadingCircle" class="modal slds-scope">
+            <div class="circle slds-modal slds-fade-in-open slds-modal_medium"></div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        
+        <!-- MODAL PDF VIEWER -->
+        <div id="myModal" class="modal slds-scope">
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                <div class="slds-modal__container">
+                    <iframe src="/apex/PlanDePagosPDF?id={!PaymentPlan.Id}#page=1&zoom=100%" style="height:1000px !important;width:100%;" />
+                        
+                    <footer class="slds-modal__footer">
+                        <!--<commandbutton class="slds-button slds-button_neutral" onclick="closeModal(); return false;">Cancel</commandbutton>-->
+                        <commandbutton class="slds-button slds-button_brand" onclick="closeModal(); return false;">Ok</commandbutton>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+            
+        <!--APEX VARIABLES DIV-->
+        <apex:outputPanel id="post_processing">
+            <script>
+            
+            function formatNumber(value) {
+                if (!value) return '';
+                const number = parseFloat(value.replace(/,/g, ''));
+                if (isNaN(number)) return value;
+                return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+                            function checkMessages() {
+                    if (hasMessages) {
+                        $('#err_text').html(errorMessage);
+                        $('[id$=msg_block]').show();
+                    } else {
+                        $('[id$=msg_block]').hide();
+                    }
+                }
+                function showLoadingCircle() {
+                    $('#LoadingCircle').modal('show');
+                }
+                function hideLoadingCircle() {
+                    $('#LoadingCircle').modal('hide');
+                }
+                function closeModal() {
+                    $('#myModal').modal('hide');
+                }
+                function showPDF() {
+                    if ({!NOT(IsDataChanged)}){$('#myModal').modal({backdrop:'static'}).show(); return false;}
+                }
+                function onClickCalcular() {
+                    if({!Calculated}) {
+                        if (confirm('¿Esta acción volverá a recalcular los pagos y reiniciará\nlas fechas, está seguro que desea continuar?')) {
+                            calculateAction();
+                        }
+                    } else {
+                        calculateAction();
+                    }
+                }
+    
+                var hasMessages = {!hasMessages};
+                var errorMessage = "{!errorMessage}";
+
+                checkMessages();
+                $('#myForm').on('submit',function(e) {
+                    e.preventDefault();
+                    showLoadingCircle();
+                });
+            
+            document.addEventListener('DOMContentLoaded', function () {
+    const input = document.querySelector('[id$=reserva]');
+    if (input) {
+        // Mostrar con formato al salir
+        input.addEventListener('blur', function () {
+            this.value = formatNumber(this.value);
+        });
+
+        // Quitar el formato antes de enviar
+        input.form.addEventListener('submit', function () {
+            input.value = input.value.replace(/,/g, '');
+        });
+    }
+});
+
+            </script>
+        </apex:outputPanel>
+    </apex:form>
+    <apex:slds />
+    <style>
+        #LoadingCircle {
+            width:100%;
+            height:100%;
+        }
+        .modal {
+            display: none;
+        }
+        .circle { 
+            position: absolute; 
+            top: 40% !important;
+            left: 45% !important;
+            transform: translate(-40%, -45%); 
+            animation: effect 1s linear infinite; 
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            border: 20px solid rgba(45, 83, 149, 1); 
+            border-top-color: #fff; 
+        }
+        @keyframes effect { 
+            0% { 
+                transform: rotate(0deg); 
+            }
+            100% { 
+                transform: rotate(360deg); 
+            }
+        }
+    </style>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+    
+    
+</apex:page>

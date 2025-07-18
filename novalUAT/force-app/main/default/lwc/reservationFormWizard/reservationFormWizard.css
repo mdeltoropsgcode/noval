@@ -1,0 +1,414 @@
+.success-container {
+    background-color: #e6ffe6;
+    /* verde claro */
+    padding: 2rem;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.success-icon-container .success-icon,
+.success-icon-container lightning-icon {
+    --slds-c-icon-color-foreground: white !important;
+    --slds-c-icon-color-foreground-default: white !important;
+}
+
+.warning-icon-container .warning-icon,
+.warning-icon-container lightning-icon {
+    --slds-c-icon-color-foreground: white !important;
+    --slds-c-icon-color-foreground-default: white !important;
+}
+
+.error-icon-container .error-icon,
+.error-icon-container lightning-icon {
+    --slds-c-icon-color-foreground: white !important;
+    --slds-c-icon-color-foreground-default: white !important;
+}
+
+.slds-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .mobile-no-left-padding {
+        padding-left: 0 !important; /* Usamos !important para asegurar que sobrescriba otros estilos */
+    }
+}
+
+/* Clases para mostrar/ocultar elementos según el tamaño de pantalla */
+.show-mobile {
+    display: block !important;
+}
+
+.hide-mobile {
+    display: none !important;
+}
+
+/* Media queries para tablets y desktop */
+@media (min-width: 768px) {
+    .show-mobile {
+        display: none !important;
+    }
+    
+    .hide-mobile {
+        display: block !important;
+    }
+}
+
+/* Mejoras para la responsividad en móviles */
+@media (max-width: 767px) {
+    /* Ajustar padding del contenedor principal */
+    .slds-container_fluid {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    
+    /* Mejorar el espaciado en cards */
+    .slds-card__body_inner {
+        padding: 1rem !important;
+    }
+    
+    /* Ajustar el tamaño de fuente en móviles */
+    .slds-text-heading_large {
+        font-size: 1.25rem !important;
+    }
+    
+    /* Botones de ancho completo en móviles */
+    .slds-button {
+        width: 100%;
+    }
+    
+    /* Mejorar el espaciado de los grids en móviles */
+    .slds-gutters_small > .slds-col {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+    
+    /* Ajustar el media object para móviles */
+    .slds-media_responsive {
+        display: block !important;
+    }
+    
+    .slds-media_responsive .slds-media__figure {
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+        text-align: center;
+    }
+    
+    .slds-media_responsive .slds-media__body {
+        text-align: center;
+    }
+}
+
+/* Mejoras específicas para tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .slds-container_fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Ajustar el grid para tablets */
+    .slds-medium-size_2-of-3 {
+        width: 66.666667%;
+    }
+    
+    .slds-medium-size_1-of-3 {
+        width: 33.333333%;
+    }
+}
+
+/* Mejoras para desktop */
+@media (min-width: 1024px) {
+    .slds-container_fluid {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+/* Mejorar la visualización de las imágenes de métodos de pago */
+.slds-box img {
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+/* Ajustar el ordenamiento para móviles */
+@media (max-width: 767px) {
+    .slds-order_1,
+    .slds-order_2 {
+        order: initial;
+    }
+    
+    /* El sidebar aparece después del contenido principal en móviles */
+    
+}
+
+/* Mejorar la legibilidad en pantallas pequeñas */
+@media (max-width: 480px) {
+    .slds-text-heading_medium {
+        font-size: 1.125rem !important;
+    }
+    
+    .slds-text-heading_small {
+        font-size: 1rem !important;
+    }
+    
+    .slds-text-body_regular {
+        font-size: 0.875rem !important;
+    }
+    
+    .slds-text-body_small {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* Asegurar que los botones se vean bien en todas las pantallas */
+.slds-button {
+    min-height: 2.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ajustar botones en móvil para que se mantengan compactos */
+@media (max-width: 767px) {
+    .slds-grid_align-end .slds-col {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: none;
+    }
+    
+    .slds-grid_align-end .slds-button {
+        min-width: 120px;
+        width: auto;
+    }
+}
+
+/* Mejorar el espaciado de los elementos de lista en móviles */
+@media (max-width: 767px) {
+    .slds-list__item {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+}
+
+/* Mejoras específicas para la página de éxito */
+
+
+/* Mejorar el espaciado del contenedor principal en móviles */
+@media (max-width: 767px) {
+    .slds-container_fluid.slds-p-around_large {
+        padding: 1rem !important;
+    }
+    
+    .slds-card__body_inner.slds-p-around_x-large {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Optimizar el tamaño de fuente del título en móviles */
+@media (max-width: 767px) {
+    .slds-text-heading_large {
+        font-size: 1.5rem !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* Mejorar la caja de información en móviles */
+@media (max-width: 767px) {
+    .slds-box.slds-theme_success {
+        padding: 1.25rem !important;
+    }
+    
+    .slds-box.slds-theme_success .slds-text-heading_small {
+        font-size: 1.125rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+}
+
+/* Optimizar las cards de información en móviles */
+@media (max-width: 767px) {
+    .slds-box.slds-theme_shade {
+        padding: 1.25rem !important;
+        margin-bottom: 1rem !important;
+        min-height: auto !important;
+    }
+    
+    /* Asegurar que las cards tengan la misma altura en mobile */
+    .slds-gutters_medium.slds-wrap > .slds-col {
+        margin-bottom: 0.5rem;
+    }
+    
+    .slds-gutters_medium.slds-wrap > .slds-col:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Mejorar el espaciado de los íconos en móvil */
+@media (max-width: 767px) {
+    .show-mobile lightning-icon {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Ajustar el ancho máximo del contenedor en pantallas muy grandes */
+@media (min-width: 1200px) {
+    .slds-large-size_6-of-12 {
+        max-width: 600px;
+    }
+}
+
+/* Mejorar la legibilidad en pantallas pequeñas */
+@media (max-width: 480px) {
+    .slds-text-heading_large {
+        font-size: 1.25rem !important;
+    }
+    
+    .slds-text-body_regular {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    .slds-text-body_small {
+        font-size: 0.8rem !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* Asegurar que los elementos centrados se mantengan centrados */
+.slds-text-align_center {
+    text-align: center !important;
+}
+
+/* Mejorar la visualización del borde superior en móviles */
+@media (max-width: 767px) {
+    .slds-border_top.slds-border_success {
+        border-top-width: 4px !important;
+    }
+}
+
+/* Optimizar el espaciado entre elementos en móviles */
+@media (max-width: 767px) {
+    .slds-m-bottom_large {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .slds-m-bottom_medium {
+        margin-bottom: 1rem !important;
+    }
+    
+    .slds-m-bottom_small {
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Mejoras específicas para la página de error/decline */
+
+/* Mejorar la caja de troubleshooting en móviles */
+@media (max-width: 767px) {
+    .slds-box.slds-theme_error {
+        padding: 1.25rem !important;
+    }
+    
+    .slds-box.slds-theme_error .slds-text-heading_small {
+        font-size: 1.125rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    /* Ajustar la lista en móviles */
+    .slds-box.slds-theme_error .slds-list_dotted {
+        padding-left: 1rem !important;
+    }
+    
+    .slds-box.slds-theme_error .slds-list_dotted .slds-item {
+        font-size: 0.875rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Optimizar las cards de opciones alternativas en móviles */
+@media (max-width: 767px) {
+    .slds-box.slds-theme_shade {
+        padding: 1.25rem !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Mejorar el botón de acción en móviles */
+@media (max-width: 767px) {
+    .slds-size_1-of-1 lightning-button {
+        width: 100% !important;
+    }
+    
+    .slds-size_1-of-1 lightning-button button {
+        width: 100% !important;
+        padding: 0.875rem 1.5rem !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* Ajustar el texto de contacto de soporte en móviles */
+@media (max-width: 767px) {
+    .slds-text-align_center .slds-text-body_small {
+        font-size: 0.8rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    .slds-text-link {
+        display: block !important;
+        margin-top: 0.25rem !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Mejorar el espaciado del título de error en móviles */
+@media (max-width: 767px) {
+    .slds-text-color_error.slds-text-heading_large {
+        font-size: 1.5rem !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* Ajustar el borde superior en móviles */
+@media (max-width: 767px) {
+    .slds-border_top.slds-border_error {
+        border-top-width: 4px !important;
+    }
+}
+
+/* Mejorar la alineación del texto de la lista en móviles */
+@media (max-width: 767px) {
+    .slds-text-align_left {
+        text-align: left !important;
+        margin-top: 1rem !important;
+    }
+}
+
+/* Optimizar el espaciado entre elementos en la página de error */
+@media (max-width: 767px) {
+    .slds-m-top_large {
+        margin-top: 1.5rem !important;
+    }
+    
+    .slds-m-bottom_medium {
+        margin-bottom: 1rem !important;
+    }
+}

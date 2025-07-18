@@ -1,0 +1,95 @@
+/* Contenedor principal de la tarjeta */
+.chart-card {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Header de la tarjeta */
+.card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #374151;
+}
+
+.refresh-btn {
+    transition: transform 0.2s ease;
+}
+
+.refresh-btn:hover {
+    transform: rotate(90deg);
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+    padding: 0;
+    min-height: 350px;
+}
+
+/* Contenedor del gráfico */
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    background: #ffffff;
+}
+
+.chart {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    min-height: 300px;
+}
+
+/* Responsive Design */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .chart-container {
+        padding: 20px;
+    }
+    
+    .chart {
+        min-height: 250px;
+    }
+    
+    .card-body {
+        min-height: 300px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .chart-card:hover {
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+    
+    .card-title {
+        font-size: 1em;
+    }
+    
+    .chart-container {
+        padding: 16px;
+    }
+    
+    .chart {
+        min-height: 220px;
+    }
+    
+    .card-body {
+        min-height: 270px;
+    }
+}
+
+/* Tooltip personalizado del gráfico */
+.chart-tooltip {
+    z-index: 1000;
+}

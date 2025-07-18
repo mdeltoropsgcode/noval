@@ -1,0 +1,23 @@
+<template>
+    <lightning-card variant="base" class="chart-card">
+        <div slot="title" class="card-title">
+            Activity (Last 90 Days)
+        </div>
+        <div slot="actions">
+            <lightning-button-icon 
+                icon-name="utility:refresh" 
+                variant="border-filled" 
+                alternative-text="Refresh data"
+                onclick={fetchData}
+                class="refresh-btn">
+            </lightning-button-icon>
+        </div>
+        
+        <div class="card-body">
+            <!-- Chart container -->
+            <div class="chart-container">
+                <div class="chart" lwc:dom="manual"></div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

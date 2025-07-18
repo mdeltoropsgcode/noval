@@ -1,0 +1,623 @@
+<!--
+La firma utiliza un plugin de jQuery, mas información en el siguiente enlace:
+https://www.jqueryscript.net/other/customizable-signature-pad.html
+-->
+<apex:page standardController="Post_Sale_Form__c" extensions="CaseChecklistController" lightningStylesheets="true" applyHtmlTag="false" applyBodyTag="false" showHeader="false" showQuickActionVfHeader="false" docType="html-5.0">
+    <apex:outputPanel rendered="{!UITheme='Theme4d'}" layout="none">
+        <html>
+            <head>
+                <style>
+                    .signatureBox {
+                        width:2.81in;
+                        border:1px solid black;
+                        border-top:0;
+                        height:1in;
+                        background-color:white;
+                        margin:auto;
+                        display:block;
+                        padding:0;
+                    }
+                    .signatureBoxTitle {
+                        text-align:center;
+                        border:1px solid black;
+                        padding:0;
+                        margin:auto;
+                        font-weight:bold;
+                        width:2.81in;
+                    }
+                    .signatureButtons {
+                        text-align:right;
+                        width:2.8in;
+                        display:block;
+                        margin:auto;
+                    }
+                    .mainTitle {
+                    	width: 90vw !important;
+                    }
+                </style>
+                <apex:includeScript value="{!URLFOR($Resource.signature_pad, 'js/jquery-3.6.0.min.js')}"/>
+                <apex:stylesheet value="{!URLFOR($Resource.signature_pad, 'css/jquery-ui.css')}"/>
+                <apex:includeScript value="{!URLFOR($Resource.signature_pad, 'js/jquery-ui.min.js')}"/>
+                <apex:stylesheet value="{!URLFOR($Resource.signature_pad, 'css/jquery.signature.css')}"/>
+                <apex:includeScript value="{!URLFOR($Resource.signature_pad, 'js/jquery.signature.js')}"/>
+                <script type='text/javascript'>
+                var sig, sig2, sig3, sig4;
+                function saveSigns() {
+                    var sign1, sign2, sign3, sign4;
+                    sign1 = sig.isEmpty && sig.signature('isEmpty') ? '' : sig.signature('toDataURL');
+                    sign2 = sig2.isEmpty && sig2.signature('isEmpty') ? '' : sig2.signature('toDataURL');
+                    sign3 = sig3.isEmpty && sig3.signature('isEmpty') ? '' : sig3.signature('toDataURL');
+                    sign4 = sig4.isEmpty && sig4.signature('isEmpty') ? '' : sig4.signature('toDataURL');
+                    customSave(sign1,sign2,sign3,sign4);
+                }
+                function reloadSigns3and4() {
+                    var signatureConfig = {
+                        
+                        // The minimum distance to start a drag.
+                        distance: 0,
+                        
+                        // The background colour.
+                        background: 'rgba(0, 0, 0, 0)',//background: '#EEE',
+                        
+                        // The colour of the signature.
+                        color: '#000',
+                        
+                        // The thickness of the lines.
+                        thickness: 2,
+                        
+                        // enable/disable the guideline
+                        guideline: true,
+                        
+                        // guideline colour.
+                        guidelineColor: '#a0a0a0',
+                        
+                        // guideline offset (pixels) from the bottom
+                        guidelineOffset: 18,
+                        
+                        // guideline indent (pixels) from the edges
+                        guidelineIndent: 10,
+                        
+                        syncFormat: 'PNG',
+                        
+                        notAvailable:'Your browser doesn\'t support signing',
+                        
+                        scale: 1
+                    };
+                    sig3 = $('#sig3').signature(signatureConfig);
+                    sig4 = $('#sig4').signature(signatureConfig);
+                    $('#clear3').click(function() {
+                        sig3.signature('clear');
+                        sig3.isEmpty = true;
+                        return false;
+                    });
+                    $('#clear4').click(function() {
+                        sig4.signature('clear');
+                        sig4.isEmpty = true;
+                        return false;
+                    });
+                    if ('{!Post_Sale_Form__c.PSG_SIGN_3__c}') {
+                        sig3.isEmpty = false;
+                        sig3.signature('draw', '{!Post_Sale_Form__c.PSG_SIGN_3__c}');
+                    } else sig3.isEmpty = true;
+                    if ('{!Post_Sale_Form__c.PSG_SIGN_4__c}') {
+                        sig4.isEmpty = false;
+                        sig4.signature('draw', '{!Post_Sale_Form__c.PSG_SIGN_4__c}');
+                    } else sig4.isEmpty = true;
+                }
+                $(function() { // On load
+                    var signatureConfig = {
+                        
+                        // The minimum distance to start a drag.
+                        distance: 0,
+                        
+                        // The background colour.
+                        background: 'rgba(0, 0, 0, 0)',//background: '#EEE',
+                        
+                        // The colour of the signature.
+                        color: '#000',
+                        
+                        // The thickness of the lines.
+                        thickness: 2,
+                        
+                        // enable/disable the guideline
+                        guideline: true,
+                        
+                        // guideline colour.
+                        guidelineColor: '#a0a0a0',
+                        
+                        // guideline offset (pixels) from the bottom
+                        guidelineOffset: 18,
+                        
+                        // guideline indent (pixels) from the edges
+                        guidelineIndent: 10,
+                        
+                        syncFormat: 'PNG',
+                        
+                        notAvailable:'Your browser doesn\'t support signing',
+                        
+                        scale: 1
+                    };
+                    sig = $('#sig').signature(signatureConfig);
+                    sig2 = $('#sig2').signature(signatureConfig);
+                    sig3 = $('#sig3').signature(signatureConfig);
+                    sig4 = $('#sig4').signature(signatureConfig);
+                    $('#clear').click(function() {
+                        sig.signature('clear');
+                        sig.isEmpty = true;
+                        return false;
+                    });
+                    $('#clear2').click(function() {
+                        sig2.signature('clear');
+                        sig2.isEmpty = true;
+                        return false;
+                    });
+                    $('#clear3').click(function() {
+                        sig3.signature('clear');
+                        sig3.isEmpty = true;
+                        return false;
+                    });
+                    $('#clear4').click(function() {
+                        sig4.signature('clear');
+                        sig4.isEmpty = true;
+                        return false;
+                    });
+                    if ('{!Post_Sale_Form__c.PSG_SIGN_1__c}') {
+                        sig.isEmpty = false;
+                        sig.signature('draw', '{!Post_Sale_Form__c.PSG_SIGN_1__c}');
+                    } else sig.isEmpty = true;
+                    if ('{!Post_Sale_Form__c.PSG_SIGN_2__c}') {
+                        sig2.isEmpty = false;
+                        sig2.signature('draw', '{!Post_Sale_Form__c.PSG_SIGN_2__c}');
+                    } else sig2.isEmpty = true;
+                    if ('{!Post_Sale_Form__c.PSG_SIGN_3__c}') {
+                        sig3.isEmpty = false;
+                        sig3.signature('draw', '{!Post_Sale_Form__c.PSG_SIGN_3__c}');
+                    } else sig3.isEmpty = true;
+                    if ('{!Post_Sale_Form__c.PSG_SIGN_4__c}') {
+                        sig4.isEmpty = false;
+                        sig4.signature('draw', '{!Post_Sale_Form__c.PSG_SIGN_4__c}');
+                    } else sig4.isEmpty = true;
+                });
+                </script>
+            </head>
+            <body>
+                <apex:form >
+                    <apex:pageBlock title="FORMULARIO DE INSPECCIÓN DE CALIDAD FINAL">
+                        <apex:pageBlockSection >
+                            <apex:outputText value="{0, date,dd/MM/yyyy}" label="Fecha">
+                                <apex:param value="{!TODAY()}"/>
+                            </apex:outputText>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Visit_Number_2__c}"/>
+                            <apex:outputField value="{!Post_Sale_Form__c.PSG_Project__c}" label="Proyecto"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Notes__c}"/>
+                            <apex:outputField value="{!Post_Sale_Form__c.psg_Product__c}" label="Apartamento"/>
+                        </apex:pageBlockSection>
+                        <apex:repeat value="{!categorias}" var="obj">
+                            <apex:pageBlockSection title="{!obj.Name}">
+                                <apex:repeat value="{!obj.criterios}" var="criterio">
+                                    <apex:outputField value="{!criterio.Name}" label="Criterio"/>
+                                    <apex:outputField value="{!criterio.Condicion__c}"/>
+                                    <apex:inputField value="{!criterio.Aprobacion__c}"/>
+                                    <apex:inputField value="{!criterio.Observacion__c}"/>
+                                    <apex:pageBlockSectionItem />
+                                    <apex:pageBlockSectionItem />
+                                </apex:repeat>
+                            </apex:pageBlockSection>
+                        </apex:repeat>
+                        <apex:pageBlockSection columns="1">
+                            <apex:outputText >
+                                Con la firma del presente documento confirmo haber verificado las instalaciones y equipos correspondientes antes de la entrega definitiva. 
+                                Con el mismo el gerente de obra se compromete a terminar todo lo anteriormente citado en la fecha que a continuación se colocará:
+                            </apex:outputText>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection >
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Project_Manager__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Next_Visit_Date__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection >
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Gerente de Obra</p>
+                                <div class="signatureBox" id="sig"></div>
+                                <div class="signatureButtons">
+                                    <button id="clear">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Inspector de Calidad</p>
+                                <div class="signatureBox" id="sig2"></div>
+                                <div class="signatureButtons">
+                                    <button id="clear2">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <apex:pageBlock title="APRUEBA RECIBIR LA PROPIEDAD?" id="recibirPropiedad" >
+                        <apex:pageBlockSection columns="1">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c}">
+                                <apex:actionSupport action="{!setFechaEntrega}" rerender="recibirPropiedad" event="onchange"/>
+                            </apex:inputField>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Observation__c}" style="width:90%;" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="VERIFICACIÓN DE INSTALACIONES Y EQUIPOS" collapsible="false" columns="1" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Electrical_System__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Water_System__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Doors_Windows_and_Railings__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Floors_Screeds_and_Coatings__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Walls_Ceilings_and_Coatings__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Kitchen_Furniture_and_Closets__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Prefabricated_Wooden_Doors__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Appliances__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECEPCIÓN DE A/A" collapsible="false" columns="1" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <script>
+                            reloadSigns3and4();
+                            </script>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Thermostats_Start_System__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Air_Conditioning_Controls__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECEPCIÓN DE LLAVES" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:input value="{!CantLlavesPrincipal}"  type="number" label="Cantidad llaves de la puerta principal">
+                                <apex:actionSupport event="onchange" reRender="totalLlaves" />
+                            </apex:input>
+                            <apex:input value="{!CantLlavesInterior}"  type="number" label="Cantidad llaves de las puertas interiores">
+                                <apex:actionSupport event="onchange" reRender="totalLlaves" />
+                            </apex:input>
+                            <apex:input value="{!CantOtrasLlaves}"  type="number" label="Cantidad otras llaves">
+                                <apex:actionSupport event="onchange" reRender="totalLlaves" />
+                            </apex:input>
+                            <apex:outputText label="Total de llaves recibidas" id="totalLlaves" value="{!CantTotalLlaves}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECEPCIÓN DE PROPIEDAD" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:outputField label="Se recibe durante la Visita N°:" value="{!Post_Sale_Form__c.PSG_Visit_Number_2__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Delivery_Reception_Date__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="ENTREGA" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Project_Manager__c}"/>
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Gerente de Obra</p>
+                                <div class="signatureBox" id="sig3"></div>
+                                <div class="signatureButtons">
+                                    <button id="clear3">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECIBE" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Quality_Inspector__c}"/>
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Inspector de Calidad</p>
+                                <div class="signatureBox" id="sig4"></div>
+                                <div class="signatureButtons">
+                                    <button id="clear4">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <apex:pageBlock >
+                        <apex:pageBlockButtons location="bottom">
+                            <apex:commandButton onclick="saveSigns();return false;" value="Guardar" />
+                            <apex:commandButton action="{!cancel}" value="Cancelar" id="cancelBtn" immediate="true"/>
+                        </apex:pageBlockButtons>
+                    </apex:pageBlock>
+                    <apex:actionFunction action="{!customSave}" name="customSave" reRender="none">
+                        <apex:param name="p1" assignTo="{!sign1}" value=""/>
+                        <apex:param name="p2" assignTo="{!sign2}" value=""/>
+                        <apex:param name="p3" assignTo="{!sign3}" value=""/>
+                        <apex:param name="p4" assignTo="{!sign4}" value=""/>
+                    </apex:actionFunction>
+                </apex:form>
+            </body>
+        </html>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!UITheme='Theme4t'}" layout="none">
+    	<html>
+            <head>
+                <style>
+                    .signatureCanvas {
+                    	width:2.81in;
+                        border:1px solid black;
+                        border-top:0;
+                        height:1in;
+                        background-color:white;
+                        margin:auto;
+                        display:block;
+                        padding:0;
+                    }
+                    .signatureBoxTitle {
+                        text-align:center;
+                        border:1px solid black;
+                        padding:0;
+                        margin:auto;
+                        font-weight:bold;
+                        width:2.81in;
+                    }
+                    .signatureButtons {
+                        text-align:right;
+                        width:2.8in;
+                        display:block;
+                        margin:auto;
+                    }
+                    .mainTitle {
+                    	width: 90vw !important;
+                    }
+                </style>
+                <script type='text/javascript'>
+                    var sig, sig2, sig3, sig4;
+                    var signatureConfig = {
+                        // The minimum distance to start a drag.
+                        distance: 0,
+                        
+                        // The background colour.
+                        background: 'rgba(0, 0, 0, 0)',//background: '#EEE',
+                        
+                        // The colour of the signature.
+                        color: 'rgba(0,0,0,1)',
+                        
+                        // The thickness of the lines.
+                        thickness: 2,
+                        
+                        // enable/disable the guideline
+                        guideline: true,
+                        
+                        // guideline colour.
+                        guidelineColor: '#a0a0a0',
+                        
+                        // guideline offset (pixels) from the bottom
+                        guidelineOffset: 18,
+                        
+                        // guideline indent (pixels) from the edges
+                        guidelineIndent: 10,
+                        
+                        syncFormat: 'PNG',
+                        
+                        notAvailable:'Your browser doesn\'t support signing',
+                        
+                        scale: 1
+                    };
+                    function Signature(elementId, signConfig) {
+                        this.canvas = document.getElementById(elementId);
+                        if (!this.canvas) {
+                            delete this.canvas;
+                            this.initialized = false;
+                            return;
+                        }
+                        this.canvas.width = Math.floor(this.canvas.scrollWidth);
+                        this.canvas.height = Math.floor(this.canvas.scrollHeight);
+                        this.isDrawing = false;
+                        this.config = signConfig;
+                        
+                        this.drawImage = function (strDataURI) {
+                            var img = new Image;
+                            img.signatureObj = this;
+                            img.onload = function(){
+                                this.signatureObj.context.clearRect(0, 0, this.signatureObj.canvas.width, this.signatureObj.canvas.height);
+                                this.signatureObj.context.drawImage(img, 0, 0, img.width, img.height);
+                            };
+                            img.src = strDataURI;
+                        };
+                        
+                        this.clearSign = function() {
+                            this.canvasIsEmpty = true;
+                            this.context.fillStyle = this.config.background;
+                            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                            
+                            // Draw guideline line
+                            this.context.strokeStyle = this.config.guidelineColor;
+                            this.context.lineWidth = 2;
+                            this.context.beginPath();
+                            this.context.moveTo(this.config.guidelineIndent, this.canvas.height - this.config.guidelineOffset);
+                            this.context.lineTo(this.canvas.width - this.config.guidelineIndent, this.canvas.height - this.config.guidelineOffset);
+                            this.context.stroke();
+                            this.context.closePath();
+                        };
+                        this.start = function (event) {
+                            this.isDrawing = true;
+                            
+                            this.context.strokeStyle = this.config.color;
+                            this.context.beginPath();
+                            this.context.moveTo(event.touches[0].clientX - this.canvas.getBoundingClientRect().left,event.touches[0].clientY - this.canvas.getBoundingClientRect().top);
+                        };
+                        this.move = function (event) {
+                            event.preventDefault();
+                            if(this.isDrawing) {
+                                this.context.lineTo(event.touches[0].clientX - this.canvas.getBoundingClientRect().left,event.touches[0].clientY - this.canvas.getBoundingClientRect().top);
+                                this.context.stroke();
+                            }
+                        };
+                        this.end = function (event) {
+                            if(this.isDrawing) {
+                                this.context.stroke();
+                                this.context.closePath();
+                                this.isDrawing = false;
+                                this.canvasIsEmpty = false;
+                            }
+                        };
+                        this.toDataURL = function() {
+                            return this.canvas.toDataURL();
+                        }
+                        this.context = this.canvas.getContext("2d");
+                        this.context.scale(this.config.scale, this.config.scale);
+                        this.canvas.addEventListener("touchstart",this.start.bind(this),false);
+                        this.canvas.addEventListener("touchmove",this.move.bind(this),false);
+                        this.canvas.addEventListener("touchend",this.end.bind(this),false);
+                        this.clearSign();
+                        
+                        this.initialized = true;
+                    }
+                	function reloadSigns3and4() {
+                        sig3 = new Signature("sig3", signatureConfig);
+                        sig4 = new Signature("sig4", signatureConfig);
+
+                        if (sig3.initialized) {
+                            if ('{!Post_Sale_Form__c.PSG_SIGN_3__c}') {
+                                sig3.canvasIsEmpty = false;
+                                sig3.drawImage('{!Post_Sale_Form__c.PSG_SIGN_3__c}');
+                            } else sig3.canvasIsEmpty = true;
+                        }
+                        if (sig4.initialized) {
+                            if ('{!Post_Sale_Form__c.PSG_SIGN_4__c}') {
+                                sig4.canvasIsEmpty = false;
+                                sig4.drawImage('{!Post_Sale_Form__c.PSG_SIGN_4__c}');
+                            } else sig4.canvasIsEmpty = true;
+                        }
+                    }
+                    function saveSigns() {
+                        var sign1, sign2, sign3, sign4;
+                        sign1 = sig.canvasIsEmpty ? '' : sig.toDataURL();
+                        sign2 = sig2.canvasIsEmpty ? '' : sig2.toDataURL();
+                        sign3 = sig3.canvasIsEmpty ? '' : sig3.toDataURL();
+                        sign4 = sig4.canvasIsEmpty ? '' : sig4.toDataURL();
+                        customSave(sign1,sign2,sign3,sign4);
+                    }
+                </script>
+            </head>
+            <body>
+                <apex:form >
+                    <apex:pageBlock title="FORMULARIO DE INSPECCIÓN DE CALIDAD FINAL">
+                        <apex:pageBlockSection >
+                            <apex:outputText value="{0, date,dd/MM/yyyy}" label="Fecha">
+                                <apex:param value="{!TODAY()}"/>
+                            </apex:outputText>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Visit_Number_2__c}"/>
+                            <apex:outputField value="{!Post_Sale_Form__c.PSG_Project__c}" label="Proyecto"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Notes__c}"/>
+                            <apex:outputField value="{!Post_Sale_Form__c.psg_Product__c}" label="Apartamento"/>
+                        </apex:pageBlockSection>
+                        <apex:repeat value="{!categorias}" var="obj">
+                            <apex:pageBlockSection title="{!obj.Name}">
+                                <apex:repeat value="{!obj.criterios}" var="criterio">
+                                    <apex:outputField value="{!criterio.Name}" label="Criterio"/>
+                                    <apex:outputField value="{!criterio.Condicion__c}"/>
+                                    <apex:inputField value="{!criterio.Aprobacion__c}"/>
+                                    <apex:inputField value="{!criterio.Observacion__c}"/>
+                                    <apex:pageBlockSectionItem />
+                                    <apex:pageBlockSectionItem />
+                                </apex:repeat>
+                            </apex:pageBlockSection>
+                        </apex:repeat>PSG_Thermostats_Start_System__c
+                        <apex:pageBlockSection columns="1">
+                            <apex:outputText >
+                                Con la firma del presente documento confirmo haber verificado las instalaciones y equipos correspondientes antes de la entrega definitiva. 
+                                Con el mismo el gerente de obra se compromete a terminar todo lo anteriormente citado en la fecha que a continuación se colocará:
+                            </apex:outputText>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection >
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Project_Manager__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Next_Visit_Date__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection >
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Gerente de Obra</p>
+                                <canvas class="signatureCanvas" id="sig" width="267" height="95"/>
+                                <div class="signatureButtons">
+                                    <button id="clear" onclick="sig.clearSign();return false;">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Inspector de Calidad</p>
+                                <canvas class="signatureCanvas" id="sig2" width="267" height="95"/>
+                                <div class="signatureButtons">
+                                    <button id="clear2" onclick="sig2.clearSign();return false;">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <apex:pageBlock title="APRUEBA RECIBIR LA PROPIEDAD?" id="recibirPropiedad" >
+                        <apex:pageBlockSection columns="1">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c}">
+                                <apex:actionSupport action="{!setFechaEntrega}" rerender="recibirPropiedad" event="onchange"/>
+                            </apex:inputField>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Observation__c}" style="width:90%;" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="VERIFICACIÓN DE INSTALACIONES Y EQUIPOS" collapsible="false" columns="1" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Electrical_System__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Water_System__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Doors_Windows_and_Railings__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Floors_Screeds_and_Coatings__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Walls_Ceilings_and_Coatings__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Kitchen_Furniture_and_Closets__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Prefabricated_Wooden_Doors__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Appliances__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECEPCIÓN DE A/A" collapsible="false" columns="1" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <script>
+                            reloadSigns3and4();
+                            </script>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Thermostats_Start_System__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Air_Conditioning_Controls__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECEPCIÓN DE LLAVES" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:input value="{!CantLlavesPrincipal}"  type="number" label="Cantidad llaves de la puerta principal">
+                                <apex:actionSupport event="onchange" reRender="totalLlaves" />
+                            </apex:input>
+                            <apex:input value="{!CantLlavesInterior}"  type="number" label="Cantidad llaves de las puertas interiores">
+                                <apex:actionSupport event="onchange" reRender="totalLlaves" />
+                            </apex:input>
+                            <apex:input value="{!CantOtrasLlaves}"  type="number" label="Cantidad otras llaves">
+                                <apex:actionSupport event="onchange" reRender="totalLlaves" />
+                            </apex:input>
+                            <apex:outputText label="Total de llaves recibidas" id="totalLlaves" value="{!CantTotalLlaves}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECEPCIÓN DE PROPIEDAD" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:outputField label="Se recibe durante la Visita N°:" value="{!Post_Sale_Form__c.PSG_Visit_Number_2__c}"/>
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Delivery_Reception_Date__c}"/>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="ENTREGA" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Project_Manager__c}"/>
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Gerente de Obra</p>
+                                <canvas class="signatureCanvas" id="sig3" width="267" height="95"/>
+                                <div class="signatureButtons">
+                                    <button id="clear3" onclick="sig3.clearSign();return false;">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="RECIBE" collapsible="false" rendered="{!Post_Sale_Form__c.PSG_Approve_to_receive_the_property__c='Sí'}">
+                            <apex:inputField value="{!Post_Sale_Form__c.PSG_Quality_Inspector__c}"/>
+                            <apex:pageBlockSectionItem >
+                                <p class="signatureBoxTitle">Firma Inspector de Calidad</p>
+                                <canvas class="signatureCanvas" id="sig4" width="267" height="95"/>
+                                <div class="signatureButtons">
+                                    <button id="clear4" onclick="sig4.clearSign();return false;">Borrar</button> 
+                                </div>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    <apex:pageBlock >
+                        <apex:pageBlockButtons location="bottom">
+                            <apex:commandButton onclick="saveSigns();return false;" value="Guardar" />
+                            <apex:commandButton action="{!cancel}" value="Cancelar" id="cancelBtn" immediate="true"/>
+                        </apex:pageBlockButtons>
+                    </apex:pageBlock>
+                    <apex:actionFunction action="{!customSave}" name="customSave" reRender="none">
+                        <apex:param name="p1" assignTo="{!sign1}" value=""/>
+                        <apex:param name="p2" assignTo="{!sign2}" value=""/>
+                        <apex:param name="p3" assignTo="{!sign3}" value=""/>
+                        <apex:param name="p4" assignTo="{!sign4}" value=""/>
+                    </apex:actionFunction>
+                </apex:form>
+                <script type='text/javascript'>
+                sig = new Signature("sig", signatureConfig);
+                sig2 = new Signature("sig2", signatureConfig);
+                sig3 = new Signature("sig3", signatureConfig);
+                sig4 = new Signature("sig4", signatureConfig);
+                if ('{!Post_Sale_Form__c.PSG_SIGN_1__c}') {
+                    sig.canvasIsEmpty = false;
+                    sig.drawImage('{!Post_Sale_Form__c.PSG_SIGN_1__c}');
+                } else sig.canvasIsEmpty = true;
+                if ('{!Post_Sale_Form__c.PSG_SIGN_2__c}') {
+                    sig2.canvasIsEmpty = false;
+                    sig2.drawImage('{!Post_Sale_Form__c.PSG_SIGN_2__c}');
+                } else sig2.canvasIsEmpty = true;
+                if ('{!Post_Sale_Form__c.PSG_SIGN_3__c}') {
+                    sig3.canvasIsEmpty = false;
+                    sig3.drawImage('{!Post_Sale_Form__c.PSG_SIGN_3__c}');
+                } else sig3.canvasIsEmpty = true;
+                if ('{!Post_Sale_Form__c.PSG_SIGN_4__c}') {
+                    sig4.canvasIsEmpty = false;
+                    sig4.drawImage('{!Post_Sale_Form__c.PSG_SIGN_4__c}');
+                } else sig4.canvasIsEmpty = true;
+                </script>
+            </body>
+        </html>
+    </apex:outputPanel>
+</apex:page>

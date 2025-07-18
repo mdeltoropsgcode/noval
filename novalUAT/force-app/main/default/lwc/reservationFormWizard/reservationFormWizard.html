@@ -1,0 +1,2307 @@
+<template>
+    <lightning-card>
+        <template if:true={isLoading}>
+            <div class="slds-spinner_container">
+                <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+            </div>
+        </template>
+        <!-- Header Section -->
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12">
+                <div class="slds-text-align_center slds-m-top_large">
+                    <h1 class="slds-text-heading_large">Reserva de Unidad</h1>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12">
+                <template if:true={showGeneralSubtitle}>
+                    <div class="slds-text-align_center slds-m-top_small slds-p-horizontal_small">
+                        <p class="slds-text-body_regular">
+                            Has tomado una excelente decisión. Es algo que solo tú puedes hacer por ti.
+                            Confírmanos tus datos, para continuar a realizar la reserva.
+                        </p>
+                    </div>
+                </template>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12">
+                <div class="slds-m-around_medium">
+                    <lightning-progress-indicator current-step={currentStep} type="base" variant="base">
+                        <lightning-progress-step label="Información de Reservación" value="1"></lightning-progress-step>
+                        <lightning-progress-step label="Información Personal" value="2"></lightning-progress-step>
+                        <lightning-progress-step label="Información del Conyuge" value="3"></lightning-progress-step>
+                        <lightning-progress-step label="Fuentes de Ingresos" value="4"></lightning-progress-step>
+                        <lightning-progress-step label="Referencias y Relaciones" value="5"></lightning-progress-step>
+                        <lightning-progress-step label="Políticamente Expuesto" value="6"></lightning-progress-step>
+                        <lightning-progress-step label="Método de Pago" value="7"></lightning-progress-step>
+                        <lightning-progress-step label="Pago" value="8"></lightning-progress-step>
+                        <lightning-progress-step label="Finalizar" value="9"></lightning-progress-step>
+                    </lightning-progress-indicator>
+                </div>
+            </lightning-layout-item>
+
+            <template if:true={errorMessage}>
+                <lightning-layout-item size="12">
+                    <div class="slds-text-align_center slds-text-color_error">
+                        <p>{errorMessage}</p>
+                    </div>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
+
+
+        <template if:true={isStep1}>
+            <div class="slds-grid slds-grid_align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <div class="slds-text-align_center slds-p-vertical_medium">
+                                <h2 class="slds-card__header-title">
+                                    <span style="font-weight: 500 !important;"
+                                        class="slds-text-heading_large slds-text-color_brand">Información de
+                                        Reservación</span>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="slds-form slds-form_compound">
+
+                                <div class="slds-form-element__group">
+                                    <div class="slds-form-element__row slds-medium-gutters_direct">
+                                        <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="proyecto"><strong>Proyecto</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular slds-text-longform"
+                                                        id="proyecto">
+                                                        {product2.project}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 mobile-no-left-padding">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="apartamento"><strong>Apartamento</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular slds-text-longform"
+                                                        id="apartamento">
+                                                        {product2.apartment}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-form-element__group">
+                                    <div class="slds-form-element__row slds-medium-gutters_direct">
+                                        <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="habitaciones"><strong>Habitaciones</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular slds-text-longform"
+                                                        id="habitaciones">
+                                                        {product2.bedroom}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 mobile-no-left-padding">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="superficie"><strong>Superficie</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular slds-text-longform"
+                                                        id="superficie">
+                                                        {product2.floorArea}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-form-element__group">
+                                    <div class="slds-form-element__row slds-medium-gutters_direct">
+                                        <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="nivel"><strong>Nivel</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular slds-text-longform" id="nivel">
+                                                        {product2.floor}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 mobile-no-left-padding">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="estacionamiento"><strong>Estacionamiento</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular slds-text-longform"
+                                                        id="estacionamiento">
+                                                        {product2.parking}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-form-element__group">
+                                    <div class="slds-form-element__row slds-medium-gutters_direct">
+                                        <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="fechaEntrega"><strong>Fecha de Entrega</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <lightning-formatted-date-time value={deliveryDate} year="numeric"
+                                                        month="2-digit" day="2-digit">
+                                                    </lightning-formatted-date-time>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="slds-form-element slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2 mobile-no-left-padding">
+                                                <label class="slds-form-element__label slds-text-body_regular"
+                                                    for="precio"><strong>Precio</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <lightning-formatted-number value={product2.amount}
+                                                        format-style="currency" currency-code="USD"
+                                                        currency-display-as="symbol">
+                                                    </lightning-formatted-number>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-text-align_right slds-m-top_medium">
+                                <lightning-button label="Confirmar" variant="brand"
+                                    onclick={handleNextStepWithoutValidationEvent}>
+                                </lightning-button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isStep2}>
+            <form onsubmit={handleValidateContact} class="slds-grid slds-grid_align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+
+                    <lightning-layout multiple-rows>
+
+                        <!-- Título -->
+                        <lightning-layout-item padding="around-small" size="12">
+                            <h2 class="slds-text-heading_medium">
+                                <span style="font-weight: 500 !important;"
+                                    class="slds-text-heading_large slds-text-color_brand">Información Personal</span>
+                            </h2>
+                        </lightning-layout-item>
+
+                        <!-- Nombre y Apellido -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input label="Nombre" data-field="firstName" value={firstName}
+                                        onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input label="Apellido" data-field="lastName" value={lastName}
+                                        onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Nacionalidad y Fecha de nacimiento -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="Nacionalidad" data-field="nationality"
+                                        value={nationality} options={nationalities} onchange={handleInput} required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input type="date" label="Fecha de nacimiento" data-field="birthDate"
+                                        value={birthDate} onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Estado civil y Email -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="Estado civil" data-field="maritalStatus"
+                                        value={maritalStatus} options={maritalStatusOptions} onchange={handleInput}
+                                        required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input type="email" label="Email" data-field="email" value={email}
+                                        onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Tipo y No. Identificación -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="Tipo" value={identificationType}
+                                        data-field="identificationType" options={identificationTypeOptions}
+                                        onchange={handleIdentificationTypeChange} required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input label="No. de Identificación" type="text"
+                                        data-field="identificationNumber" maxlength={identificationMaxLengh}
+                                        value={identificationNumber} onchange={handleDocumentChange} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Código de país y Teléfono -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="Código de País" value={countryCode}
+                                        data-field="countryCode" options={countryOptions} onchange={handleCountryChange}
+                                        required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input type="tel" label="Teléfono" id="phone"
+                                        placeholder={phonePlaceholder} maxlength={maxPhoneLength} data-field="phone"
+                                        value={phone} onchange={handlePhoneChange} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Código de país y Teléfono -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input type="tel" label="Celular" id="MobilePhone"
+                                        placeholder={phonePlaceholder} maxlength={maxPhoneLength}
+                                        data-field="MobilePhone" value={MobilePhone} onchange={handleMobilePhoneChange}
+                                        required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small"
+                                    class="slds-grid slds-grid_vertical-align-end" style="min-height: 80px;">
+                                    <lightning-input type="checkbox" label="¿Es dueño de la propiedad?" name="isOwner"
+                                        data-field="isOwner" checked={isOwner} onchange={handleInput}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+
+                        <!-- Profesión y Detalles -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input label="Profesión" data-field="profession" value={profession}
+                                        onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input label="Detalles de la ocupación" data-field="occupationDetails"
+                                        value={occupationDetails} onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Ciudadanía -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="¿Posee ciudadanía en otro país?"
+                                        data-field="hasOtherCitizenship" value={hasOtherCitizenship}
+                                        options={citizenshipOptions} onchange={handleCitizenshipChange} required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="Indique cuál (Si aplica)" data-field="otherCitizenship"
+                                        value={otherCitizenship} options={nationalities} onchange={handleInput}
+                                        required={otherCitizenRequired} disabled={otherCitizenDisabled}>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Dirección -->
+                        <lightning-layout-item size="12" padding="around-small">
+                            <lightning-input label="Dirección" data-field="address" value={address}
+                                onchange={handleInput} required>
+                            </lightning-input>
+                        </lightning-layout-item>
+
+                        <!-- Ciudad, Estado, Postal -->
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                    <lightning-input label="Ciudad" data-field="city" value={city}
+                                        onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                    <lightning-input label="Estado/Provincia" data-field="state" value={state}
+                                        onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                    <lightning-input label="Código Postal" data-field="postalCode" value={postalCode}
+                                        maxlength="5" onchange={handleInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <!-- Botones -->
+                        <lightning-layout-item padding="around-small" size="12">
+                            <div class="slds-text-align_right">
+                                <lightning-button label="Anterior" onclick={previousStep}
+                                    class="slds-m-right_small"></lightning-button>
+                                <lightning-button label="Siguiente" variant="brand" type="submit"></lightning-button>
+                            </div>
+                        </lightning-layout-item>
+
+                    </lightning-layout>
+
+                </div>
+            </form>
+        </template>
+
+        <!-- fuente de informacion del conyugue -->
+        <template if:true={isStep3}>
+            <div class="slds-grid slds-grid_align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item padding="around-small" size="12">
+                            <h2 class="slds-text-heading_medium">
+                                <span style="font-weight: 500 !important;"
+                                    class="slds-text-heading_large slds-text-color_brand">Información del Cónyuge</span>
+                            </h2>
+                        </lightning-layout-item>
+
+                        <div class="slds-form slds-form_compound">
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Nombre" data-field="spouseName" value={spouseName}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                        <div
+                                            class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Apellido" data-field="spouseLastName"
+                                                value={spouseLastName} onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Cédula o Pasaporte" data-field="spouseIdNumber"
+                                                value={spouseIdNumber} onchange={handleInput}></lightning-input>
+                                        </div>
+                                        <div
+                                            class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Lugar de Nacimiento" data-field="spouseBirthPlace"
+                                                value={spouseBirthPlace} onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Profesión" data-field="spouseProfession"
+                                                value={spouseProfession} onchange={handleInput}></lightning-input>
+                                        </div>
+                                        <div
+                                            class="slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Detalle de la ocupación"
+                                                data-field="spouseProfessionDetail" value={spouseProfessionDetail}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class="slds-size_1-of-1 slds-p-around_small slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                            <lightning-combobox label="Nacionalidad" data-field="spouseNationality"
+                                                value={spouseNationality} options={nationalities} onchange={handleInput}
+                                                required></lightning-combobox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-text-align_right slds-p-around_small">
+                                <lightning-button label="Anterior" onclick={previousStep}
+                                    class="slds-m-right_small"></lightning-button>
+                                <lightning-button label="Siguiente" variant="brand"
+                                    onclick={handleValidateContact}></lightning-button>
+                            </div>
+                        </div>
+                    </lightning-layout>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- fuente de ingresos -->
+        <template if:true={isStep4}>
+            <div class="slds-grid slds-grid_align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item padding="around-small" size="12">
+                            <div class="slds-p-around_small">
+                                <h3 class="slds-text-heading_small"><strong>Fuentes de Ingresos</strong></h3>
+                            </div>
+                        </lightning-layout-item>
+
+                        <div class="slds-form slds-form_compound">
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-p-around_small slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                            <lightning-combobox name="progress" label="Origen de los fondos"
+                                                value={SourceOfFunds} data-field="SourceOfFunds"
+                                                options={optsSourceOfFunds}
+                                                onchange={handleSourceOfFundsChange}></lightning-combobox>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-p-around_small slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                            <lightning-input label="Otro Origen" data-field="anotherSourceOfFunds"
+                                                value={anotherSourceOfFunds} onchange={handleInput}
+                                                disabled={anotherSourceOfFundsDisabled}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-combobox name="activity" label="Actividad Principal"
+                                                value={mainActivity} data-field="mainActivity"
+                                                options={optsMainActivity}
+                                                onchange={handleMainActivityChange}></lightning-combobox>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Otra Actividad" data-field="anotherActivity"
+                                                value={anotherActivity} onchange={handleInput}
+                                                disabled={anotherActivityDisabled}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input name="lastOcupation" label="Última ocupación"
+                                                value={lastOcupation} data-field="lastOcupation"
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-p-around_small">
+                                <h3 class="slds-text-heading_small"><strong>Detalles de la empresa:</strong></h3>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Denominación/Nombre" data-field="businessName"
+                                                value={businessName} onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Actividad" data-field="businessActivity"
+                                                value={businessActivity} onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                            <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                                <div
+                                                    class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                                    <lightning-combobox label="Código de País"
+                                                        value={businessCountryCode} data-field="businessCountryCode"
+                                                        options={countryOptions} onchange={handleBusinessCountryChange}>
+                                                    </lightning-combobox>
+                                                </div>
+                                                <div
+                                                    class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                                    <lightning-input type="tel" label="Teléfono"
+                                                        data-field="businessPhone" value={businessPhone}
+                                                        onchange={handleBusinessPhoneChange}
+                                                        maxlength={businessPhoneMaxLength}
+                                                        placeholder={businessPhonePlaceholder}>
+                                                    </lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Dirección" data-field="businessAddress"
+                                                value={businessAddress} onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Cargo que ocupa" data-field="businessOcupation"
+                                                value={businessOcupation} onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Supervisor" data-field="businessSupervisor"
+                                                value={businessSupervisor} onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-text-align_right slds-p-around_small">
+                                <lightning-button label="Anterior" onclick={previousStep}
+                                    class="slds-m-right_small"></lightning-button>
+                                <lightning-button label="Siguiente" variant="brand"
+                                    onclick={handleValidateContact}></lightning-button>
+                            </div>
+                        </div>
+                    </lightning-layout>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- Referencias -->
+        <template if:true={isStep5}> <!-- Referencias -->
+            <div class="slds-grid slds-grid_align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_10-of-12 slds-large-size_10-of-12">
+                    <lightning-layout multiple-rows>
+                        <div class="slds-p-around_small slds-m-top_medium">
+                            <h3 class="slds-text-heading_small"><strong>¿Cómo nos conoció?</strong></h3>
+                        </div>
+
+                        <lightning-layout-item size="12">
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-combobox label="Referido por" data-field="howHeard" value={howHeard}
+                                        options={optsHowHeard} onchange={handleHowHeardChange} required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <lightning-input label="Especificar otro" data-field="otherHowHeard"
+                                        value={otherHowHeard} onchange={handleInput} required={otherHowHeardRequired}
+                                        disabled={otherHowHeardDisabled}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <div class="slds-p-around_small">
+                            <h3 class="slds-text-heading_small slds-m-top_medium"><strong>Referencia Bancaria
+                                    Principal</strong></h3>
+                        </div>
+
+                        <div class="slds-form slds-form_compound">
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-p-around_small slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                            <lightning-combobox name="nombreBanco" label="Nombre de la entidad bancaria"
+                                                value={nombreBanco} data-field="nombreBanco" options={nombresBancos}
+                                                onchange={nombreBancoChange}></lightning-combobox>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Cuenta No." data-field="accountNo" value={accountNo}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-combobox name="tipoCuenta" label="Tipo de cuenta"
+                                                value={tipoCuenta} data-field="tipoCuenta" options={optsTipoCuenta}
+                                                onchange={handletipoCuentaChange}></lightning-combobox>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Sucursal" data-field="bankBranch" value={bankBranch}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input type="tel" label="Teléfono" id="bankPhone"
+                                                placeholder={phonePlaceholder} maxlength={maxPhoneLength}
+                                                data-field="bankPhone" value={bankPhone}
+                                                onchange={handleBankPhoneChange} required>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-p-around_small">
+                                <h3 class="slds-text-heading_small slds-m-top_medium">
+                                    <strong>Referencia Comercial</strong>
+                                </h3>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Nombre de la Entidad Comercial"
+                                                data-field="comercialReferralName" value={comercialReferralName}
+                                                onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Nombre de contacto comercial"
+                                                data-field="comercialContactName" value={comercialContactName}
+                                                onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input label="Dirección" data-field="comercialReferralAddress"
+                                                value={comercialReferralAddress} onchange={handleInput}>
+                                            </lightning-input>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input type="tel" label="Teléfono" id="comercialReferralPhone"
+                                                placeholder={phonePlaceholder} maxlength={maxPhoneLength}
+                                                data-field="comercialReferralPhone" value={comercialReferralPhone}
+                                                onchange={handleComercialPhoneChange} required>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-p-around_small">
+                                <h3 class="slds-text-heading_small slds-m-top_medium">
+                                    <strong>Referencia Laboral</strong>
+                                </h3>
+                            </div>
+
+                            <lightning-layout-item size="12">
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-input label="Nombre y apellido" data-field="laboralReferralName"
+                                            value={laboralReferralName} onchange={handleInput} required>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-input label="Ocupación" data-field="laboralReferralOcupation"
+                                            value={laboralReferralOcupation} onchange={handleInput} required>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-input type="tel" label="Teléfono" id="laboralReferralPhone"
+                                            placeholder={phonePlaceholder} maxlength={maxPhoneLength}
+                                            data-field="laboralReferralPhone" value={laboralReferralPhone}
+                                            onchange={handleLaboralPhoneChange} required>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-layout-item>
+
+
+                            <!--  Personas Expuestas politicamente (PEP's) -->
+
+                            <div class="slds-p-around_small">
+                                <h3 class="slds-text-heading_small slds-m-top_medium">
+                                    <strong>Personas Expuestas politicamente (PEP's)</strong>
+                                </h3>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-combobox name="politicallyExposed"
+                                                label="Pollíticamente expuesto" value={politicallyExposed}
+                                                data-field="politicallyExposed" options={optspoliticallyExposed}
+                                                required onchange={handlepoliticallyExposedChange}></lightning-combobox>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-combobox name="relationshipWithPolitician"
+                                                label="Relación con político" value={relationshipWithPolitician}
+                                                data-field="relationshipWithPolitician"
+                                                options={optsrelationshipWithPolitician} required
+                                                onchange={handlerelationshipWithPoliticianChange}></lightning-combobox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-combobox name="linkWithPolitician" label="Contacto con político"
+                                                value={linkWithPolitician} data-field="linkWithPolitician"
+                                                options={optslinkWithPolitician} required
+                                                onchange={handlelinkWithPoliticianChange}></lightning-combobox>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input name="otherLink" label="Otro enlace" value={otherLink}
+                                                data-field="otherLink" required
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input name="politicianParentheses" label="Indique el parentesco"
+                                                value={politicianParentheses} data-field="politicianParentheses"
+                                                required={politicianParenthesesRequired}
+                                                disabled={politicianParenthesesDisabled}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input name="politicianName"
+                                                label="Indique el nombre del político"
+                                                value={politicianName} data-field="politicianName"
+                                                required={politicianParenthesesRequired}
+                                                disabled={politicianParenthesesDisabled}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row ">
+                                    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1">
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input name="politicianPosition" label="Indique el cargo"
+                                                value={politicianPosition} data-field="politicianPosition"
+                                                required={politicianParenthesesRequired}
+                                                disabled={politicianParenthesesDisabled}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                        <div
+                                            class=" slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small slds-large-size_1-of-2">
+                                            <lightning-input name="politicianInstitution"
+                                                label="Indique la Institución o Partido Político"
+                                                value={politicianInstitution} data-field="politicianInstitution"
+                                                required={politicianParenthesesRequired}
+                                                disabled={politicianParenthesesDisabled}
+                                                onchange={handleInput}></lightning-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-text-align_right slds-p-around_small">
+                                <lightning-button label="Anterior" onclick={previousStep}
+                                    class="slds-m-right_small"></lightning-button>
+                                <lightning-button label="Siguiente" variant="brand"
+                                    onclick={handleValidateReferences}></lightning-button>
+                            </div>
+                        </div>
+                    </lightning-layout>
+                </div>
+            </div>
+        </template>
+
+        <!-- Step 2: Payment Information
+        <template if:true={isStep2}>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item padding="around-small" size="12">
+                    <h3 class="slds-text-heading_medium"><strong>Información de Pago</strong></h3>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12">
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input label="Nombre en la Tarjeta" data-field="cardName" value={cardName}
+                                onchange={handleInput} required>
+                            </lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input label="No. de la Tarjeta" data-field="cardNumber" value={cardNumber}
+                                onchange={handleCardNumberChange} maxlength={cardFormatLength} required>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12">
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input label="Fecha de Vencimiento" data-field="cardExpiry" value={cardExpiry}
+                                onchange={handleCardExpiryChange} maxlength={cardFormatExpiryLength} required>
+                            </lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <lightning-input label="CVC" data-field="cardCvc" value={cardCvc}
+                                onchange={handleCardCvcChange} maxlength={cardFormatCvcLength} required>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+
+                <lightning-layout-item padding="around-small" size="12">
+                    <div class="slds-text-align_right">
+                        <lightning-button label="Anterior" onclick={previousStep}
+                            class="slds-m-right_small"></lightning-button>
+                        <lightning-button label="Procesar Pago" variant="brand"
+                            onclick={handleSubmitPayment}></lightning-button>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            Loading Spinner -->
+        <!-- 
+        </template> -->
+
+        <!-- metodo de pago -->
+        <template if:true={isStep6}>
+            <div
+                class="slds-container_fluid slds-p-around_small slds-p-around_large@tablet slds-p-around_x-large@desktop">
+
+                <!-- Header mejorado con mejor spacing responsive -->
+                <div class="slds-card slds-m-bottom_medium slds-m-bottom_large@tablet slds-border_bottom">
+                    <div
+                        class="slds-card__body slds-card__body_inner slds-p-vertical_medium slds-p-vertical_large@tablet">
+                        <div class="slds-media slds-media_center slds-media_responsive">
+                            <div class="slds-media__figure slds-m-right_small slds-m-right_medium@tablet">
+                                <div class="slds-icon_container slds-icon-utility-choice slds-icon_container_circle">
+                                    <lightning-icon icon-name="utility:choice" alternative-text="Método de Pago"
+                                        size="medium" class="show-mobile">
+                                    </lightning-icon>
+                                    <lightning-icon icon-name="utility:choice" alternative-text="Método de Pago"
+                                        size="large" class="hide-mobile">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <div class="slds-media__body">
+                                <h1
+                                    class="slds-text-heading_medium slds-text-heading_large@tablet slds-m-bottom_x-small">
+                                    Método de Pago
+                                </h1>
+                                <p
+                                    class="slds-text-body_regular slds-text-heading_small@tablet slds-text-color_default slds-m-bottom_x-small">
+                                    Proyecto <strong class="slds-text-color_success">{product2.project}</strong>
+                                </p>
+                                <p
+                                    class="slds-text-body_regular slds-text-heading_small@tablet slds-text-color_default slds-m-bottom_x-small">
+                                    Reserva de unidad <strong
+                                        class="slds-text-color_success">{product2.apartment}</strong>
+                                </p>
+                                <p class="slds-text-body_small slds-text-body_regular@tablet slds-text-color_weak">
+                                    Seleccione su método de pago preferido
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid principal con estructura responsive mejorada -->
+                <div
+                    class="slds-grid slds-wrap slds-gutters_small slds-gutters_medium@tablet slds-gutters_large@desktop">
+
+                    <!-- Columna principal - Selección de método de pago -->
+                    <div class="slds-col slds-size_1-of-1">
+
+                        <!-- Selección de método de pago -->
+                        <div class="slds-card slds-m-bottom_medium slds-m-bottom_large@tablet">
+                            <div class="slds-card__header slds-border_bottom">
+                                <h3
+                                    class="slds-text-heading_small slds-text-heading_medium@tablet slds-p-vertical_small">
+                                    <lightning-icon icon-name="utility:choice" size="small"
+                                        class="slds-m-right_x-small"></lightning-icon>
+                                    Seleccione su Método de Pago
+                                </h3>
+                            </div>
+                            <div
+                                class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+
+                                <lightning-radio-group name="paymentMethod" label="" options={paymentMethodOptions}
+                                    value={selectedPaymentMethod} onchange={handlePaymentMethodChange} type="radio"
+                                    required>
+                                </lightning-radio-group>
+
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="slds-card">
+                            <div
+                                class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+                                <!-- Botones siempre uno al lado del otro -->
+                                <div
+                                    class="slds-grid slds-grid_align-end slds-grid_align-center@tablet slds-gutters_small slds-gutters_medium@tablet">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning-button label="Anterior" variant="neutral" size="large"
+                                            onclick={previousStep} class="slds-size_1-of-1">
+                                        </lightning-button>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                        <lightning-button label="Continuar" variant="brand" size="large"
+                                            onclick={handleMoveToPaymentMethod} disabled={isNextDisabled}
+                                            class="slds-size_1-of-1">
+                                        </lightning-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+        <!-- Payment -->
+        <template if:true={isStep7}>
+
+            <!-- bankTransfer -->
+            <template if:true={isBankTransfer}>
+                <div
+                    class="slds-container_fluid slds-p-around_small slds-p-around_large@tablet slds-p-around_x-large@desktop">
+                    <form onsubmit={handlePaymentValidation}>
+
+                        <lightning-layout multiple-rows class="step6-inputs">
+                            <lightning-layout-item padding="around-small" size="12">
+                                <h3 class="slds-text-heading_medium"><strong>Comprobante de Pago</strong></h3>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <lightning-input type="file" label="Comprobante" required
+                                    onchange={handleFileUpload}></lightning-input> {fileUploaded.filename}
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" padding="around-small">
+                                <lightning-input label="Fecha de Pago" type="datetime"
+                                    data-field="paymentValidation.Date" value={paymentValidation.Date}
+                                    onchange={handleInput} required>
+                                </lightning-input>
+
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <h5 class="slds-text-heading_medium"><strong>Información Pago Reserva</strong></h5>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" padding="around-small">
+                                <lightning-input type="number" label="Monto Reserva (USD)"
+                                    data-field="paymentValidation.Amount" value={paymentValidation.Amount}
+                                    formatter="currency" onchange={handleInput} required>
+                                </lightning-input>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="slds-text-align_right">
+                                    <lightning-button type="button" label="Anterior" onclick={previousStep}
+                                        class="slds-m-right_small"></lightning-button>
+                                    <lightning-button label="Finalizar" variant="brand"
+                                        type="submit"></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </form>
+                </div>
+
+            </template>
+
+            <!-- cardPayment -->
+
+            <template if:true={isCreditCard}>
+                <div
+                    class="slds-container_fluid slds-p-around_small slds-p-around_large@tablet slds-p-around_x-large@desktop">
+                    <!-- Header mejorado con mejor spacing responsive -->
+                    <div class="slds-card slds-m-bottom_medium slds-m-bottom_large@tablet slds-border_bottom">
+                        <div
+                            class="slds-card__body slds-card__body_inner slds-p-vertical_medium slds-p-vertical_large@tablet">
+                            <div class="slds-media slds-media_center slds-media_responsive">
+                                <div class="slds-media__figure slds-m-right_small slds-m-right_medium@tablet">
+                                    <div
+                                        class="slds-icon_container slds-icon-utility-payment_gateway slds-icon_container_circle">
+                                        <lightning-icon icon-name="utility:payment_gateway"
+                                            alternative-text="Pago Seguro" size="medium"
+                                            class="show-mobile"></lightning-icon>
+                                        <lightning-icon icon-name="utility:payment_gateway"
+                                            alternative-text="Pago Seguro" size="large"
+                                            class="hide-mobile"></lightning-icon>
+                                    </div>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h1
+                                        class="slds-text-heading_medium slds-text-heading_large@tablet slds-m-bottom_x-small">
+                                        Confirmación de Pago
+                                    </h1>
+                                    <p
+                                        class="slds-text-body_regular slds-text-heading_small@tablet slds-text-color_default slds-m-bottom_x-small">
+                                        Reserva de unidad <strong
+                                            class="slds-text-color_success">{product2.apartment}</strong>
+                                    </p>
+                                    <p class="slds-text-body_small slds-text-body_regular@tablet slds-text-color_weak">
+                                        Complete su transacción de forma segura y confiable
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="https://pruebas.azul.com.do/paymentpage/Default.aspx" method="post" id="paymentForm"
+                        name="paymentForm">
+
+                        <!-- Campos ocultos -->
+                        <input type="hidden" id="MerchantId" name="MerchantId" value={formData.MerchantId}>
+                        <input type="hidden" id="MerchantName" name="MerchantName" value={formData.MerchantName}>
+                        <input type="hidden" id="MerchantType" name="MerchantType" value={formData.MerchantType}>
+                        <input type="hidden" id="CurrencyCode" name="CurrencyCode" value={formData.CurrencyCode}>
+                        <input type="hidden" id="OrderNumber" name="OrderNumber" value={formData.OrderNumber}>
+                        <input type="hidden" id="Amount" name="Amount" value={formData.Amount}>
+                        <input type="hidden" id="ITBIS" name="ITBIS" value={formData.ITBIS}>
+                        <input type="hidden" id="ApprovedUrl" name="ApprovedUrl" value={formData.ApprovedUrl}>
+                        <input type="hidden" id="DeclinedUrl" name="DeclinedUrl" value={formData.DeclinedUrl}>
+                        <input type="hidden" id="CancelUrl" name="CancelUrl" value={formData.CancelUrl}>
+                        <input type="hidden" id="UseCustomField1" name="UseCustomField1"
+                            value={formData.UseCustomField1}>
+                        <input type="hidden" id="UseCustomField2" name="UseCustomField2"
+                            value={formData.UseCustomField2}>
+                        <input type="hidden" id="AuthHash" name="AuthHash" value={formData.AuthHash}>
+
+                        <!-- Grid principal con estructura responsive mejorada -->
+                        <div
+                            class="slds-grid slds-wrap slds-gutters_small slds-gutters_medium@tablet slds-gutters_large@desktop">
+
+                            <!-- Columna principal - Información del pedido -->
+                            <!-- En móvil: columna completa, en tablet/desktop: 2/3 -->
+                            <div class="slds-col slds-size_1-of-1">
+
+                                <!-- Resumen de pago prominente -->
+                                <div class="slds-card slds-m-bottom_medium slds-m-bottom_large@tablet slds-border_top slds-border_brand"
+                                    style="border-top-width: 4px;">
+                                    <div class="slds-card__header slds-border_bottom">
+                                        <h2
+                                            class="slds-text-heading_small slds-text-heading_medium@tablet slds-p-vertical_small">
+                                            <lightning-icon icon-name="utility:money" size="small"
+                                                class="slds-m-right_x-small"></lightning-icon>
+                                            Resumen de Pago
+                                        </h2>
+                                    </div>
+                                    <div
+                                        class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+                                        <div
+                                            class="slds-grid slds-grid_align-spread slds-m-bottom_small slds-m-bottom_medium@tablet">
+                                            <div class="slds-col">
+                                                <p
+                                                    class="slds-text-body_regular slds-text-heading_small@tablet slds-text-color_default">
+                                                    Subtotal:
+                                                </p>
+                                            </div>
+                                            <div class="slds-col slds-text-align_right">
+                                                <p class="slds-text-body_regular slds-text-heading_small@tablet">
+                                                    USD$ {reservationAmount}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="slds-grid slds-grid_align-spread slds-m-bottom_small slds-m-bottom_medium@tablet">
+                                            <div class="slds-col">
+                                                <p
+                                                    class="slds-text-body_small slds-text-body_regular@tablet slds-text-color_weak">
+                                                    ITBIS incluido:
+                                                </p>
+                                            </div>
+                                            <div class="slds-col slds-text-align_right">
+                                                <p class="slds-text-body_small slds-text-body_regular@tablet">USD$
+                                                    {formData.ITBIS}</p>
+                                            </div>
+                                        </div>
+                                        <hr class="slds-m-vertical_small slds-m-vertical_medium@tablet">
+                                        <div class="slds-grid slds-grid_align-spread">
+                                            <div class="slds-col">
+                                                <p
+                                                    class="slds-text-heading_small slds-text-heading_medium@tablet slds-text-color_default">
+                                                    Total a Pagar:
+                                                </p>
+                                            </div>
+                                            <div class="slds-col slds-text-align_right">
+                                                <p
+                                                    class="slds-text-heading_medium slds-text-heading_large@tablet slds-text-color_success">
+                                                    USD$ {reservationAmount}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Métodos de pago mejorados -->
+                                <div class="slds-card slds-m-bottom_medium slds-m-bottom_large@tablet">
+                                    <div class="slds-card__header slds-border_bottom">
+                                        <!-- <h3
+                                            class="slds-text-heading_small slds-text-heading_medium@tablet slds-p-vertical_small">
+                                            <lightning-icon icon-name="utility:card" size="small"
+                                                class="slds-m-right_x-small"></lightning-icon>
+                                            Métodos de Pago Aceptados
+                                        </h3> -->
+                                    </div>
+                                    <div
+                                        class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+                                        <div
+                                            class="slds-grid slds-grid_align-center slds-gutters_small slds-gutters_medium@tablet">
+                                            <template if:true={VISA_IMG}>
+                                                <div
+                                                    class="slds-col slds-size_1-of-4 slds-size_auto@tablet slds-text-align_center">
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default show-mobile">
+                                                        <img src={VISA_IMG} alt="Visa"
+                                                            style="height: 30px; max-width: 100%;" />
+                                                    </div>
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default hide-mobile">
+                                                        <img src={VISA_IMG} alt="Visa"
+                                                            style="height: 40px; max-width: 100%;" />
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template if:true={MASTERCARD_IMG}>
+                                                <div
+                                                    class="slds-col slds-size_1-of-4 slds-size_auto@tablet slds-text-align_center">
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default show-mobile">
+                                                        <img src={MASTERCARD_IMG} alt="Mastercard"
+                                                            style="height: 30px; max-width: 100%;" />
+                                                    </div>
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default hide-mobile">
+                                                        <img src={MASTERCARD_IMG} alt="Mastercard"
+                                                            style="height: 40px; max-width: 100%;" />
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template if:true={VISA_SECURE_IMG}>
+                                                <div
+                                                    class="slds-col slds-size_1-of-4 slds-size_auto@tablet slds-text-align_center">
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default show-mobile">
+                                                        <img src={VISA_SECURE_IMG} alt="Mastercard"
+                                                            style="height: 30px; max-width: 100%;" />
+                                                    </div>
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default hide-mobile">
+                                                        <img src={VISA_SECURE_IMG} alt="Mastercard"
+                                                            style="height: 40px; max-width: 100%;" />
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template if:true={MASTERCARD_ID_CHECK_IMG}>
+                                                <div
+                                                    class="slds-col slds-size_1-of-4 slds-size_auto@tablet slds-text-align_center">
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default show-mobile">
+                                                        <img src={MASTERCARD_ID_CHECK_IMG} alt="Mastercard"
+                                                            style="height: 30px; max-width: 100%;" />
+                                                    </div>
+                                                    <div
+                                                        class="slds-box slds-box_x-small slds-theme_default hide-mobile">
+                                                        <img src={MASTERCARD_ID_CHECK_IMG} alt="Mastercard"
+                                                            style="height: 40px; max-width: 100%;" />
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Términos y condiciones -->
+                                <div class="slds-card slds-m-bottom_medium slds-m-bottom_large@tablet">
+                                    <div
+                                        class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <lightning-input type="checkbox"
+                                                    label="Acepto los términos y condiciones del sitio web" required
+                                                    class="slds-m-bottom_small slds-m-bottom_medium@tablet">
+                                                </lightning-input>
+                                                <div class="slds-text-align_left">
+                                                    <div class="slds-grid slds-wrap slds-gutters_x-small">
+                                                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-3">
+                                                            <lightning-button class="slds-size_1-of-1"
+                                                                label="Política de Devoluciones"
+                                                                onclick={openRefundPolicy} variant="base" size="small">
+                                                            </lightning-button>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-3">
+                                                            <lightning-button class="slds-size_1-of-1"
+                                                                label="Política de Entrega" onclick={openDeliveryPolicy}
+                                                                variant="base" size="small">
+                                                            </lightning-button>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-3">
+                                                            <lightning-button class="slds-size_1-of-1"
+                                                                label="Política de Privacidad"
+                                                                onclick={openPrivacyPolicy} variant="base" size="small">
+                                                            </lightning-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Botones de acción -->
+                                <div class="slds-card">
+                                    <div
+                                        class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+                                        <!-- Botones siempre uno al lado del otro -->
+                                        <div
+                                            class="slds-grid slds-grid_align-end slds-grid_align-center@tablet slds-gutters_small slds-gutters_medium@tablet">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-button label="Anterior" variant="neutral" size="large"
+                                                    onclick={previousStep} class="slds-size_1-of-1">
+                                                </lightning-button>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                                <lightning-button label="Procesar Pago" variant="brand" size="large"
+                                                    type="submit">
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </template>
+        </template>
+
+        <!-- messages -->
+        <template if:true={isStep8}>
+            <!-- success -->
+            <template if:true={isPaymentApproved}>
+                <div class="slds-container_fluid slds-p-around_large">
+                    <div class="slds-grid slds-grid_align-center">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12 slds-large-size_6-of-12">
+
+                            <!-- Success Card -->
+                            <div class="slds-card slds-border_top slds-border_success" style="border-top-width: 6px;">
+                                <div
+                                    class="slds-card__body slds-card__body_inner slds-text-align_center slds-p-around_x-large">
+
+                                    <!-- Success Icon -->
+                                    <div class="slds-m-bottom_large">
+                                        <div class="slds-icon_container slds-icon_container_circle success-icon-container"
+                                            style="background-color: #04844b; margin: 0 auto;">
+                                            <lightning-icon icon-name="utility:success" alternative-text="Éxito"
+                                                size="large" class="success-icon">
+                                            </lightning-icon>
+                                        </div>
+                                    </div>
+
+                                    <!-- Success Message -->
+                                    <div class="slds-m-bottom_large">
+                                        <h1
+                                            class="slds-text-heading_large slds-text-color_success slds-m-bottom_medium">
+                                            ¡Felicitaciones! Reserva Completada
+                                        </h1>
+                                        <p class="slds-text-body_regular slds-text-color_default slds-m-bottom_medium">
+                                            Has reservado exitosamente tu primera unidad con nosotros.
+                                            Esta es una excelente decisión de inversión.
+                                        </p>
+                                    </div>
+
+                                    <!-- Next Steps Info -->
+                                    <div style="background-color: #ACF3E4 !important; color: #056764 !important;"
+                                        class="slds-box slds-theme_success slds-m-bottom_large">
+                                        <!-- Versión Desktop -->
+                                        <div class="slds-media slds-media_center hide-mobile">
+                                            <div class="slds-media__figure slds-m-right_small">
+                                                <lightning-icon icon-name="utility:info" size="small"
+                                                    variant="inverse"></lightning-icon>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">Próximos
+                                                    Pasos:
+                                                </h3>
+                                                <p class="slds-text-body_small">
+                                                    Nuestro equipo de ejecutivos se contactará contigo próximamente
+                                                    para la formalización de tu inversión.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Versión Mobile -->
+                                        <div class="show-mobile slds-text-align_center">
+                                            <div class="slds-m-bottom_small">
+                                                <lightning-icon icon-name="utility:info" size="small"
+                                                    variant="inverse"></lightning-icon>
+                                            </div>
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Próximos Pasos:
+                                            </h3>
+                                            <p class="slds-text-body_small">
+                                                Nuestro equipo de ejecutivos se contactará contigo próximamente
+                                                para la formalización de tu inversión.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cards Grid con layout responsivo -->
+                                    <div class="slds-grid slds-gutters_medium slds-m-bottom_large slds-wrap">
+                                        <!-- Email Card -->
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <div class="slds-box slds-theme_shade">
+                                                <!-- Versión Desktop -->
+                                                <div class="slds-media slds-media_small slds-media_center hide-mobile">
+                                                    <div class="slds-media__figure">
+                                                        <lightning-icon icon-name="utility:email"
+                                                            size="x-small"></lightning-icon>
+                                                    </div>
+                                                    <div class="slds-media__body">
+                                                        <p class="slds-text-body_small">
+                                                            <strong>Email de confirmación</strong><br>
+                                                            Enviado a tu correo
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Versión Mobile -->
+                                                <div class="show-mobile slds-text-align_center">
+                                                    <div class="slds-m-bottom_x-small">
+                                                        <lightning-icon icon-name="utility:email"
+                                                            size="small"></lightning-icon>
+                                                    </div>
+                                                    <p class="slds-text-body_small">
+                                                        <strong>Email de confirmación</strong><br>
+                                                        Enviado a tu correo
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Time Card -->
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <div class="slds-box slds-theme_shade">
+                                                <!-- Versión Desktop -->
+                                                <div class="slds-media slds-media_small slds-media_center hide-mobile">
+                                                    <div class="slds-media__figure">
+                                                        <lightning-icon icon-name="utility:clock"
+                                                            size="x-small"></lightning-icon>
+                                                    </div>
+                                                    <div class="slds-media__body">
+                                                        <p class="slds-text-body_small">
+                                                            <strong>Tiempo de contacto</strong><br>
+                                                            24-48 horas hábiles
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Versión Mobile -->
+                                                <div class="show-mobile slds-text-align_center">
+                                                    <div class="slds-m-bottom_x-small">
+                                                        <lightning-icon icon-name="utility:clock"
+                                                            size="small"></lightning-icon>
+                                                    </div>
+                                                    <p class="slds-text-body_small">
+                                                        <strong>Tiempo de contacto</strong><br>
+                                                        24-48 horas hábiles
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Decline Message -->
+            <template if:true={isPaymentDeclined}>
+                <div class="slds-container_fluid slds-p-around_large">
+                    <div class="slds-grid slds-grid_align-center">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12 slds-large-size_6-of-12">
+
+                            <!-- Decline Card -->
+                            <div class="slds-card slds-border_top slds-border_error" style="border-top-width: 6px;">
+                                <div
+                                    class="slds-card__body slds-card__body_inner slds-text-align_center slds-p-around_x-large">
+
+                                    <!-- Error Icon -->
+                                    <div class="slds-m-bottom_large">
+                                        <div class="slds-icon_container slds-icon_container_circle error-icon-container"
+                                            style="background-color: #ea001e; margin: 0 auto;">
+                                            <lightning-icon icon-name="utility:error" alternative-text="Error"
+                                                size="large" class="error-icon">
+                                            </lightning-icon>
+                                        </div>
+                                    </div>
+
+                                    <!-- Error Message -->
+                                    <div class="slds-m-bottom_large">
+                                        <h1 class="slds-text-heading_large slds-text-color_error slds-m-bottom_medium">
+                                            Pago Rechazado
+                                        </h1>
+                                        <p class="slds-text-body_regular slds-text-color_default slds-m-bottom_medium">
+                                            Tu pago no pudo ser procesado exitosamente. Esto puede deberse a
+                                            diferentes factores que puedes verificar fácilmente.
+                                        </p>
+                                    </div>
+
+                                    <!-- Troubleshooting Steps -->
+                                    <div style="background-color: #FDDDE3 !important; color: #B60554 !important"
+                                        class="slds-box slds-theme_error slds-m-bottom_large">
+
+                                        <!-- Versión Desktop -->
+                                        <div class="hide-mobile">
+                                            <div class="slds-media slds-media_center slds-m-bottom_medium">
+                                                <div class="slds-media__figure slds-m-right_small">
+                                                    <lightning-icon icon-name="utility:checklist" size="small"
+                                                        variant="inverse"></lightning-icon>
+                                                </div>
+                                                <div class="slds-media__body">
+                                                    <h3 style="color: #B60554 !important;"
+                                                        class="slds-text-heading_small slds-m-bottom_x-small slds-g-font-weight-7">
+                                                        ¿Qué puedes verificar?
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="slds-text-align_left">
+                                                <ul class="slds-list_dotted">
+                                                    <li class="slds-item">Datos de la tarjeta ingresados correctamente
+                                                    </li>
+                                                    <li class="slds-item">Fondos suficientes en la cuenta</li>
+                                                    <li class="slds-item">Límites de transacción del banco</li>
+                                                    <li class="slds-item">Conexión estable a internet</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <!-- Versión Mobile -->
+                                        <div class="show-mobile slds-text-align_center">
+                                            <div class="slds-m-bottom_small">
+                                                <lightning-icon icon-name="utility:checklist" size="small"
+                                                    variant="inverse"></lightning-icon>
+                                            </div>
+                                            <h3 style="color: #B60554 !important;"
+                                                class="slds-text-heading_small slds-m-bottom_medium slds-g-font-weight-7">
+                                                ¿Qué puedes verificar?
+                                            </h3>
+                                            <div class="slds-text-align_left">
+                                                <ul class="slds-list_dotted">
+                                                    <li class="slds-item">Datos de la tarjeta ingresados correctamente
+                                                    </li>
+                                                    <li class="slds-item">Fondos suficientes en la cuenta</li>
+                                                    <li class="slds-item">Límites de transacción del banco</li>
+                                                    <li class="slds-item">Conexión estable a internet</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Alternative Options -->
+                                    <div class="slds-grid slds-gutters_medium slds-m-bottom_large slds-wrap">
+                                        <!-- Retry Option -->
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <div class="slds-box slds-theme_shade">
+                                                <!-- Versión Desktop -->
+                                                <div class="slds-media slds-media_small hide-mobile">
+                                                    <div class="slds-media__figure">
+                                                        <lightning-icon icon-name="utility:refresh"
+                                                            size="x-small"></lightning-icon>
+                                                    </div>
+                                                    <div class="slds-media__body">
+                                                        <p class="slds-text-body_small">
+                                                            <strong>Reintentar pago</strong><br>
+                                                            Con los mismos datos
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Versión Mobile -->
+                                                <div class="show-mobile slds-text-align_center">
+                                                    <div class="slds-m-bottom_x-small">
+                                                        <lightning-icon icon-name="utility:refresh"
+                                                            size="small"></lightning-icon>
+                                                    </div>
+                                                    <p class="slds-text-body_small">
+                                                        <strong>Reintentar pago</strong><br>
+                                                        Con los mismos datos
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Alternative Method -->
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <div class="slds-box slds-theme_shade">
+                                                <!-- Versión Desktop -->
+                                                <div class="slds-media slds-media_small hide-mobile">
+                                                    <div class="slds-media__figure">
+                                                        <lightning-icon icon-name="utility:card_details"
+                                                            size="x-small"></lightning-icon>
+                                                    </div>
+                                                    <div class="slds-media__body">
+                                                        <p class="slds-text-body_small">
+                                                            <strong>Otro método</strong><br>
+                                                            Diferente tarjeta
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Versión Mobile -->
+                                                <div class="show-mobile slds-text-align_center">
+                                                    <div class="slds-m-bottom_x-small">
+                                                        <lightning-icon icon-name="utility:card_details"
+                                                            size="small"></lightning-icon>
+                                                    </div>
+                                                    <p class="slds-text-body_small">
+                                                        <strong>Otro método</strong><br>
+                                                        Diferente tarjeta
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="slds-grid slds-gutters_medium">
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <lightning-button label="Reintentar Pago" onclick={toStep7} variant="brand"
+                                                size="large" class="slds-size_1-of-1">
+                                            </lightning-button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Support Contact -->
+                                    <div class="slds-text-align_center slds-m-top_large">
+                                        <p class="slds-text-body_small slds-text-color_weak">
+                                            ¿Sigues teniendo problemas? Contáctanos en:
+                                            <a href="mailto:soporte@comercio.com"
+                                                class="slds-text-link slds-m-left_xx-small">soporte@comercio.com</a>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <div slot="footer">
+            <footer class="slds-card slds-m-top_large slds-border_top"
+                style="border-top-width: 2px; border-top-color: #dddbda;">
+                <div class="slds-card__body slds-card__body_inner slds-p-around_medium slds-p-around_large@tablet">
+
+                    <!-- Grid principal del footer -->
+                    <div class="slds-grid slds-wrap slds-gutters_medium slds-gutters_large@tablet">
+
+                        <!-- Sección 1: Servicio al Cliente -->
+                        <div
+                            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium slds-m-bottom_none@medium">
+                            <div class="slds-text-align_center slds-text-align_left@medium">
+                                <h3 class="slds-text-heading_small slds-text-color_default slds-m-bottom_small">
+                                    <lightning-icon icon-name="utility:customer" size="x-small"
+                                        class="slds-m-right_x-small"></lightning-icon>
+                                    Servicio al Cliente
+                                </h3>
+                                <div class="slds-list_vertical slds-has-dividers_around-space">
+                                    <div class="slds-list__item slds-p-vertical_x-small">
+                                        <div class="slds-media slds-media_small">
+                                            <div class="slds-media__figure">
+                                                <lightning-icon icon-name="utility:email" size="xx-small"
+                                                    class="slds-text-color_weak"></lightning-icon>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p class="slds-text-body_small">
+                                                    <strong>Email:</strong><br>
+                                                    <a href="mailto:soporte@comercio.com"
+                                                        class="slds-text-link">soporte@comercio.com</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-list__item slds-p-vertical_x-small">
+                                        <div class="slds-media slds-media_small">
+                                            <div class="slds-media__figure">
+                                                <lightning-icon icon-name="utility:phone_portrait" size="xx-small"
+                                                    class="slds-text-color_weak"></lightning-icon>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p class="slds-text-body_small">
+                                                    <strong>Teléfono:</strong><br>
+                                                    <a href="tel:+18091234567" class="slds-text-link">+1 (809)
+                                                        123-4567</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-list__item slds-p-vertical_x-small">
+                                        <div class="slds-media slds-media_small">
+                                            <div class="slds-media__figure">
+                                                <lightning-icon icon-name="utility:location" size="xx-small"
+                                                    class="slds-text-color_weak"></lightning-icon>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p class="slds-text-body_small">
+                                                    <strong>Dirección:</strong><br>
+                                                    Locales 203-206, Plaza Coral Village<br>
+                                                    Av. Alemania, esq. El Dorado<br>
+                                                    Los Corales, Verón, Punta Cana<br>
+                                                    República Dominicana
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección 2: Información de Moneda -->
+                        <div
+                            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium slds-m-bottom_none@medium">
+                            <div class="slds-text-align_center slds-text-align_left@medium">
+                                <h3 class="slds-text-heading_small slds-text-color_default slds-m-bottom_small">
+                                    <lightning-icon icon-name="utility:currency" size="x-small"
+                                        class="slds-m-right_x-small"></lightning-icon>
+                                    Información de Moneda
+                                </h3>
+                                <div class="slds-box slds-box_x-small slds-theme_shade slds-m-bottom_x-small">
+                                    <p class="slds-text-body_small slds-text-color_default">
+                                        <strong>Moneda de Compra:</strong><br>
+                                        Pesos Dominicanos (RD$ / DOP$)
+                                    </p>
+                                </div>
+                                <p class="slds-text-body_small slds-text-color_weak">
+                                    Los precios en USD se convierten automáticamente a RD$ al momento del pago
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Sección 3: Políticas de Seguridad -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="slds-text-align_center slds-text-align_left@medium">
+                                <h3 class="slds-text-heading_small slds-text-color_default slds-m-bottom_small">
+                                    <lightning-icon icon-name="utility:shield" size="x-small"
+                                        class="slds-m-right_x-small"></lightning-icon>
+                                    Seguridad de Datos
+                                </h3>
+                                <div class="slds-m-bottom_small">
+                                    <lightning-button label="Políticas de Seguridad" onclick={openSecurityModal}
+                                        variant="outline-brand" size="small" class="slds-size_1-of-1">
+                                    </lightning-button>
+                                </div>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+                                    Sus datos están protegidos con encriptación SSL de 256 bits
+                                </p>
+                                <div class="slds-grid slds-grid_align-center slds-gutters_x-small slds-m-bottom_medium">
+                                    <template if:true={VISA_IMG}>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <div
+                                                class="slds-box slds-box_xx-small slds-theme_default slds-text-align_center">
+                                                <img src={VISA_IMG} alt="Verified by Visa"
+                                                    style="height: 30px; max-width: 100%;" />
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:true={MASTERCARD_ID_CHECK_IMG}>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <div
+                                                class="slds-box slds-box_xx-small slds-theme_default slds-text-align_center">
+                                                <img src={MASTERCARD_ID_CHECK_IMG} alt="MasterCard ID Check"
+                                                    style="height: 30px; max-width: 100%;" />
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-grid slds-grid_align-center slds-gutters_x-small">
+                                    <template if:true={VISA_IMG}>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <div
+                                                class="slds-box slds-box_xx-small slds-theme_default slds-text-align_center">
+                                                <img src={VISA_SECURE_IMG} alt="Verified by Visa"
+                                                    style="height: 30px; max-width: 100%;" />
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:true={MASTERCARD_ID_CHECK_IMG}>
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <div
+                                                class="slds-box slds-box_xx-small slds-theme_default slds-text-align_center">
+                                                <img src={MASTERCARD_IMG} alt="MasterCard ID Check"
+                                                    style="height: 30px; max-width: 100%;" />
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descripción de la empresa (compacta) -->
+                    <div class="slds-text-align_center slds-text-align_left@medium slds-m-vertical_small">
+                        <p class="slds-text-body_small slds-text-color_weak" style="line-height: 1.4;">
+                            En <strong>Noval Properties</strong> tenemos más de 20 años en el sector inmobiliario,
+                            ofreciendo oportunidades de inversión en <strong>Punta Cana</strong> y los principales
+                            destinos turísticos de <strong>República Dominicana</strong>, con propiedades de alta
+                            calidad y excelente retorno.
+                        </p>
+                    </div>
+
+                    <!-- Línea divisoria -->
+                    <hr class="slds-m-vertical_small">
+
+                    <!-- Copyright -->
+                    <div class="slds-text-align_center">
+                        <p class="slds-text-body_small slds-text-color_weak">
+                            © 2025 Noval Properties. Todos los derechos reservados. |
+                            <lightning-button label="Política de Privacidad" onclick={openPrivacyPolicy} variant="base"
+                                class="slds-text-link_reset"></lightning-button> |
+                            <lightning-button label="Política de Entrega" onclick={openDeliveryPolicy} variant="base"
+                                class="slds-text-link_reset"></lightning-button> |
+                            <lightning-button label="Política de Devoluciones" onclick={openRefundPolicy} variant="base"
+                                class="slds-text-link_reset"></lightning-button>
+                        </p>
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                            Transacciones procesadas de forma segura mediante protocolo SSL
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </lightning-card>
+
+    <!-- Modal - Política de Devoluciones -->
+    <template if:true={showRefundModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Política de Devoluciones,
+                        Reembolsos y Cancelaciones</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p class="slds-text-body_regular">
+                        Estas políticas están diseñadas para informar de manera clara y transparente a los
+                        tarjetahabientes sobre sus derechos y responsabilidades al realizar pagos relacionados con la
+                        adquisición de apartamentos a través de nuestra empresa constructora.
+                        <br><br><strong>1. Visibilidad de las Políticas</strong> <br>
+                        Estas políticas estarán disponibles de forma visible y accesible en todos los puntos de contacto
+                        con el cliente, incluyendo el sitio web oficial, oficinas de ventas y documentos contractuales.
+                        Antes de realizar cualquier pago, el tarjetahabiente podrá revisar y aceptar estas condiciones.
+                        <br><br><strong>2. Devoluciones</strong> <br>
+                        No se aceptan devoluciones de pagos realizados por concepto de reserva o compra de apartamentos,
+                        salvo en los casos en que la empresa no pueda cumplir con la entrega del inmueble según lo
+                        estipulado en el contrato. En tales casos, el cliente podrá solicitar una devolución formal por
+                        escrito, la cual será evaluada por el departamento legal y financiero.
+                        <br><br><strong>3. Reembolsos</strong> <br>
+                        Los reembolsos solo se realizarán en circunstancias excepcionales, como la cancelación del
+                        proyecto por parte de la empresa o incumplimiento contractual. En caso de proceder, el reembolso
+                        se realizará en un plazo de hasta 30 días hábiles, utilizando el mismo método de pago utilizado
+                        por el cliente.
+                        <br><br><strong>4. Cancelaciones</strong> <br>
+                        El cliente podrá cancelar su reserva o compra antes de la firma del contrato definitivo. Sin
+                        embargo, se aplicará una penalidad administrativa equivalente al 10% del monto pagado. Una vez
+                        firmado el contrato, no se aceptarán cancelaciones unilaterales sin consecuencias legales y
+                        económicas.
+                        <br><br><strong>5. Aceptación de las Políticas</strong> <br>
+                        Al realizar un pago, el tarjetahabiente reconoce haber leído, comprendido y aceptado estas
+                        políticas. En caso de dudas, puede comunicarse con nuestro equipo de atención al cliente antes
+                        de completar la transacción.
+
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cerrar" onclick={closeRefundModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal - Política de Entrega -->
+    <template if:true={showDeliveryModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Política de Entrega de
+                        Apartamentos</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p class="slds-text-body_regular">
+                        <br><strong>1. Condiciones de Entrega</strong> <br>
+                        La entrega del apartamento se realizará una vez que el cliente haya completado el pago
+                        correspondiente según lo estipulado en el contrato de compraventa. El inmueble será entregado en
+                        las condiciones acordadas, incluyendo terminaciones, instalaciones y servicios básicos
+                        funcionales.
+                        <br><br><strong>2. Plazos de Entrega</strong> <br>
+                        El plazo estimado para la entrega del apartamento será comunicado al cliente al momento de la
+                        firma del contrato. Cualquier modificación en la fecha de entrega será notificada con antelación
+                        razonable.
+                        <br><br><strong>3. Inspección Previa</strong> <br>
+                        Antes de la entrega formal, el cliente tendrá derecho a realizar una inspección del apartamento
+                        para verificar que cumple con las condiciones pactadas. Cualquier observación deberá ser
+                        documentada y atendida antes de la firma del acta de entrega.
+                        <br><br><strong>4. Documentación Requerida</strong> <br>
+                        Para proceder con la entrega, el cliente deberá presentar los siguientes documentos:
+                        - Copia del contrato de compraventa firmado
+                        - Comprobante de pago final
+                        - Documento de identidad
+                        - Cualquier otro documento requerido por la constructora
+                        <br><br><strong>5. Firma de Acta de Entrega</strong> <br>
+                        Una vez verificado el cumplimiento de las condiciones de entrega, ambas partes firmarán un acta
+                        de entrega que certifica la recepción del inmueble por parte del cliente.
+                        <br><br><strong>6. Contacto para Soporte Postventas</strong> <br>
+                        En caso de requerir soporte o reportar incidencias posteriores a la entrega, el cliente podrá
+                        comunicarse con el departamento de Postventas de la constructora a través de los canales
+                        oficiales.
+
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cerrar" onclick={closeDeliveryModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal - Política de Privacidad -->
+    <template if:true={showPrivacyModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
+            class="slds-modal slds-fade-in-open slds-modal_large">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Política de Privacidad
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="max-height: 60vh; overflow-y: auto;">
+                    <div class="slds-text-body_regular">
+                        <section class="slds-m-bottom_large">
+                            <br>
+                            <p>
+                                El tratamiento de los datos personales se fundamenta en el consentimiento explícito del
+                                cliente, en el cumplimiento de obligaciones contractuales y en el cumplimiento de
+                                normativas
+                                legales, conforme a la Ley No. 172-13 sobre Protección de Datos Personales de la
+                                República
+                                Dominicana.
+                            </p><br>
+                            <p>
+                                <strong>Política de Privacidad</strong> <br>
+                                NOVAL SRL podrá modificar esta Política de Privacidad en cualquier momento y sin previo
+                                aviso, en cuyo caso se actualizarán en la sección dedicada para tales fines en el Sitio
+                                Web,
+                                por lo que le sugerimos que visite periódicamente la sección correspondiente. Al usar el
+                                Sitio después de que cualquier cambio sea publicado, se considerará que el usuario
+                                acepta
+                                dichos cambios. Todos los términos modificados entran en vigencia automáticamente en la
+                                fecha establecida en la Política de Privacidad publicada, a menos que se especifique lo
+                                contrario.
+                            </p><br>
+                            <p>
+                                <strong>Sitios Web Cubiertos por esta Política de Privacidad</strong> <br>
+                                Esta Política de Privacidad aplica a todos los Sitios Web y dominios de NOVAL SRL,
+                                incluidos
+                                todos los sitios regionales o específicos del país (colectivamente, los “Sitios Web”).
+                                Los
+                                Sitios Web pueden proporcionar enlaces a sitios web de terceros para la conveniencia e
+                                información de los usuarios. Si los usuarios acceden a tales enlaces, abandonarán los
+                                Sitios
+                                Web de NOVAL SRL, no controlando tales sitios web de terceros ni sus políticas de
+                                privacidad, que pueden diferir de las políticas de privacidad de NOVAL SRL. Esta
+                                Política de
+                                Privacidad no aplica a ningún dato personal que el usuario elija divulgar a terceros no
+                                relacionados. NOVAL SRL no supervisa ni controla la información recopilada por dichos
+                                sitios
+                                web de terceros, ni las políticas de privacidad de terceros, y no es responsable de sus
+                                prácticas ni del contenido de sus sitios.
+                            </p><br>
+                            <p>
+
+                                <strong>Tipo de Información Recolectada</strong> <br>
+                                En esta Política de Privacidad, “información personal” o “datos personales” significa la
+                                información sobre una persona identificable que está sujeta a protección bajo la ley en
+                                la
+                                jurisdicción en la que reside. En algunas jurisdicciones, “información personal” o
+                                “datos
+                                personales” no incluirá información de contacto comercial.
+                            </p><br>
+                            <p>
+                                Los Sitios Web recopilan información a través de una variedad de formas diferentes y
+                                para
+                                diferentes propósitos. Si el usuario elige registrarse en cualquiera de los Sitios Web
+                                para
+                                recibir actualizaciones de NOVAL SRL, para administrar su cuenta y/o para utilizar el
+                                portal
+                                de autoservicio de NOVAL SRL, deberá proporcionar información de contacto (nombre,
+                                dirección, número de teléfono, dirección de correo electrónico, un nombre de usuario y
+                                contraseña únicos). NOVAL SRL utiliza esta información de acuerdo con sus intereses
+                                comerciales legítimos para proporcionar servicios y/o contactar a los usuarios sobre los
+                                servicios en los Sitios Web en los que ha expresado interés.
+                            </p><br>
+                            <p>
+                                Los Sitios Web recopilan automáticamente información técnica sobre la visita de los
+                                usuarios
+                                (como tipo de navegador, proveedor de servicios de Internet, tipo de plataforma,
+                                direcciones
+                                de protocolo de Internet (IP), páginas de referencia/salida, sistema operativo, sello de
+                                fecha/hora). NOVAL SRL usa la información provista por los usuarios para mejorar el
+                                servicio
+                                ofrecido, y particularmente para analizar tendencias, diagnosticar problemas con el
+                                servidor
+                                y administrar los Sitios Web, rastrear el movimiento y el uso de los usuarios y
+                                recopilar
+                                información demográfica amplia. Más información en la sección de “Cookies y otros
+                                Marcadores
+                                Digitales” a continuación.
+                            </p><br>
+
+
+                            <p>
+
+                                NOVAL SRL utiliza la información demográfica proporcionada de manera opcional por el
+                                usuario
+                                (como tipo de negocio, tamaño del negocio, ubicaciones, etc.) para comprender las
+                                necesidades e intereses de los usuarios y brindarles una experiencia personalizada en
+                                los
+                                Sitios Web, así como para procesar los pedidos, y permitir la participación en
+                                promociones
+                                (sujeto a las preferencias de marketing optadas por el usuario).
+                                Las llamadas telefónicas entre los usuarios y el personal del NOVAL SRL pueden ser
+                                grabadas
+                                con fines de capacitación y calidad, en cuyo caso, se le informará al usuario al inicio
+                                de
+                                la llamada.
+                            </p><br>
+                            <p>
+                                Por igual, NOVAL SRL podrá grabar imágenes de los usuarios por medio de un sistema CCTV
+                                mientras estos se encuentren en los centros en los que NOVAL SRL ha instalado CCTV.
+                                NOVAL SRL no recopila deliberadamente información de niños menores de 13 años, y no
+                                dirige
+                                los Sitios Web a niños menores de 13 años.
+                            </p><br>
+                            <p>
+                                <strong>Uso de la Información </strong> <br>
+                                NOVAL SRL usará la información provista por los usuarios para mejorar el servicio
+                                ofrecido,
+                                y particularmente para permitir a los usuarios solicitar productos o servicios,
+                                solicitar
+                                información o suscribirse a materiales de mercadeo o de soporte, proveer un servicio al
+                                cliente personalizado, conocer preferencias comerciales de los usuarios, completar
+                                estadísticas y auditorías internas o externas, entre otros usos legales.
+                                NOVAL SRL también podrá usar la información de contacto de los usuarios para enviarles
+                                información sobre otros productos y servicios de NOVAL SRL y sus empresas afiliadas.
+                                Para el registro y/o procesamiento de solicitudes a través de los Sitios Web, el usuario
+                                deberá proporcionar información de contacto (como nombre, correo electrónico y dirección
+                                de
+                                envío) e información financiera (como número de tarjeta de crédito, dirección de
+                                facturación
+                                y fecha de vencimiento).
+                            </p><br>
+                            <p>
+                                La información financiera recopilada sólo será utilizada para fines de facturación por
+                                concepto de los productos y servicios provistos, así como para el procesamiento de pagos
+                                y
+                                la prevención del fraude.
+                            </p><br>
+                            <p>
+                                NOVAL SRL no divulgará frente a terceros la información compartida por los usuarios
+                                excepto
+                                cuando le sea solicitado como resultado de una orden judicial, o para ayudar en una
+                                investigación para el cumplimiento de la ley, o cuando la divulgación sea necesaria para
+                                proteger los sistemas, el negocio o los derechos de NOVAL SRL.
+                            </p><br>
+
+
+                            <p>
+                                <strong>Comunicaciones Electrónicas</strong> <br>
+                                Una vez registrado en el Sitio, NOVAL SRL enviará al usuario un correo electrónico para
+                                verificar su nombre de usuario y contraseña, o para responder a las consultas planteadas
+                                por
+                                los usuarios, y brindar los servicios que éstos le soliciten.
+                                Sujeto a las preferencias de marketing por las que opte el usuario, NOVAL SRL también le
+                                enviará información sobre nuevos productos, servicios, ahorros especiales, promociones e
+                                información general. En caso de que el usuario no desee recibir esta información, podrá
+                                optar por no recibir correos futuros.
+                            </p><br>
+                            <p>
+                                Si bien NOVAL SRL no proporciona información de los usuarios a sus socios comerciales,
+                                podrá
+                                enviar a los usuarios ofertas en nombre de sus socios comerciales.
+                                Intercambio de Información y Transferencias Transfronterizas.
+                                Los usuarios reconocen que NOVAL SRL contrata habitualmente a proveedores de servicios
+                                externos para la provisión de los servicios y la entrega de productos y soluciones.
+                                NOVAL SRL podrá compartir los datos personales de los usuarios con dichos terceros para
+                                permitir la provisión de servicios, entrega de productos, y soluciones solicitadas por
+                                los
+                                usuarios. La información provista también será compartida de manera interna por el
+                                personal
+                                de NOVAL SRL para fines de consolidación de datos, almacenamiento, gestión simplificada
+                                de
+                                información del cliente, informes y otros usos internos (que pueden incluir una
+                                transferencia fuera de la República Dominicana). El manejo de los datos personales de
+                                los
+                                usuarios se hará de acuerdo con la legislación de protección de datos aplicable.
+                            </p><br>
+                            <p>
+                                <strong>Cookies y otros Marcadores Digitales.</strong> <br>
+                                Los usuarios reconocen que NOVAL SRL recopila información automáticamente mediante el
+                                uso de
+                                cookies y otros marcadores digitales.
+                                mediante el uso de cookies y otros marcadores digitales. Las cookies y los marcadores
+                                digitales son pequeños archivos de computadora que pueden almacenarse en el disco duro
+                                de su
+                                computadora o incrustarse en las páginas de nuestro sitio web que nos permiten
+                                identificarlo
+                                y rastrear su visita en el sitio web. Por ejemplo, cuándo hace solicitud de información
+                                sobre proyectos, utilizamos cookies en el proceso de pago para realizar un seguimiento
+                                de su
+                                pedido a medida que avanza en cada paso del proceso de reserva. Podemos utilizar los
+                                servicios de terceros para recopilar y procesar información personal mediante el uso de
+                                cookies y otros marcadores digitales en nuestro nombre. En caso de que el usuario
+                                deshabilite las cookies en su navegador, es posible que no pueda acceder a ciertas áreas
+                                de
+                                los Sitios Web.
+                            </p><br>
+                            <p>
+                                <strong>Elecciones y Exclusión</strong> <br>
+                                Los usuarios tendrán la opción de recibir una variedad de información para complementar
+                                los
+                                productos y servicios provistos por NOVAL SRL, pudiendo suscribirse para recibir
+                                información
+                                específica de productos y servicios y comunicaciones de marketing de NOVAL SRL.
+                            </p>
+
+
+                            <br>
+                            <p>
+                                Las comunicaciones enviadas por NOVAL SRL a los usuarios pueden incluir información
+                                sobre
+                                nuevos productos, ofertas especiales o una invitación para participar en estudios de
+                                mercado. En caso de que el usuario no desee recibir boletines y/o comunicaciones
+                                promocionales, puede optar por no recibirlos siguiendo las instrucciones incluidas en
+                                cada
+                                boletín o comunicaciones, o contactando a informacion@novalproperties.com
+                            </p><br>
+                            <p>
+                                <strong>Acceso y exactitud de su información y sus otros derechos</strong> <br>
+                                En ciertas jurisdicciones y en determinadas circunstancias tiene los siguientes
+                                derechos: un
+                                derecho de acceso; un derecho de rectificación; un derecho de borrado; derecho a
+                                restringir
+                                el procesamiento; y un derecho a oponerse al registro de sus datos. Estos derechos
+                                pueden
+                                estar limitados, por ejemplo, si el cumplimiento de su solicitud revela datos personales
+                                sobre otra persona o viola los derechos de privacidad de otras personas, o si nos
+                                solicita
+                                que eliminemos la información que la ley nos exige mantener o que tenga intereses
+                                legítimos
+                                convincentes para mantener. Para ejercer cualquiera de estos derechos, comuníquese con
+                                informacion@novalproperties.com
+                            </p><br>
+                            <p>
+                                <strong>Manteniendo su información segura</strong> <br>
+                                NOVAL SRL no garantiza la seguridad de sus servidores. Los usuarios reconocen que la
+                                información proporcionada por los usuarios a través de los Sitios Web puede ser
+                                interceptada
+                                mientras se transmite por Internet. NOVAL SRL garantiza el cumplimiento con los
+                                estándares
+                                técnicos generalmente aceptados de la industria para proteger los datos personales
+                                proporcionados, tanto durante la transmisión como luego de ser recibidos.
+                                La información confidencial recibida (como la información de tarjetas de crédito) por
+                                medio
+                                de los formularios de registro o pedido, es encriptada utilizando tecnología de capa de
+                                conexión segura.
+                            </p><br>
+                            <p>
+                                Cuando procesamos información personal con fines de marketing o con su consentimiento,
+                                procesamos los datos hasta que nos solicite detener y durante un breve período después
+                                de
+                                esto (para permitirnos implementar sus solicitudes). También mantenemos un registro del
+                                hecho de que nos ha pedido que no le enviemos marketing directo o que procesemos sus
+                                datos
+                                indefinidamente para que podamos respetar su solicitud en el futuro. Cuando procesamos
+                                información personal en relación con la ejecución de un contrato o la prestación de un
+                                servicio, o para una promoción o concurso, guardamos la información durante seis (6)
+                                años
+                                desde la última interacción del usuario con NOVAL SRL, excepto la información financiera
+                                que
+                                guardamos durante diez (10) años o cuando exista una obligación legal de guardar la
+                                información por un mayor período de tiempo. Las grabaciones de llamadas telefónicas y
+                                grabaciones de CCTV serán retenidas según lo determinado por los procedimientos de
+                                cumplimiento interno de NOVAL SRL implementados de vez en cuando.
+                            </p><br>
+                            <p>
+
+                                <strong>Transición de Negocios</strong> <br>
+                                En el caso de que NOVAL SRL atraviese una transición comercial o cambio de control, como
+                                un
+                                proceso de fusión y adquisición por parte de otra compañía, o la venta de todos o una
+                                parte
+                                de sus activos, la información personal retenida podrá formar parte de los activos
+                                transferidos.
+                            </p><br>
+                        </section>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cerrar" onclick={closePrivacyModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal - Política de seguridad -->
+    <template if:true={showSecurityModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-04" class="slds-text-heading_medium slds-hyphenate">Políticas de Seguridad
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <!-- Logos de verificación en el modal -->
+                    <div class="slds-grid slds-grid_align-center slds-gutters_small slds-m-bottom_large">
+                        <template if:true={VISA_IMG}>
+                            <div class="slds-col slds-size_auto">
+                                <img src={VISA_IMG} alt="Verified by Visa" style="height: 40px;" />
+                            </div>
+                        </template>
+                        <template if:true={MASTERCARD_ID_CHECK_IMG}>
+                            <div class="slds-col slds-size_auto">
+                                <img src={MASTERCARD_ID_CHECK_IMG} alt="MasterCard ID Check" style="height: 40px;" />
+                            </div>
+                        </template>
+                    </div>
+
+                    <p class="slds-text-body_regular">
+                        <br><strong>WEBSITE</strong> <br>
+                        Tomamos todas las medidas y precauciones razonables para proteger tu información personal y
+                        seguimos las mejores prácticas de la industria para asegurar que tu información no sea utilizada
+                        de manera inapropiada, alterada o destruida.
+                        Ciframos la información de tu tarjeta de crédito utilizando la tecnología de capa de puertos
+                        seguros o Secur Sockets Layer (SSL), y la almacenamos con el cifrado AES-256. También, seguimos
+                        todos
+                        los requerimientos del PCI-DSS.
+
+                        <br><br><strong>PAGOS </strong> <br>
+                        Los métodos de pago utilizados por LA EMPRESA son servicios de terceros. Estos servicios de
+                        terceros (AZUL), cumplen con todos los estándares de seguridad y cifrado para mantener tu
+                        información segura. Solo utilizarán la información necesaria para completar el proceso
+                        requerido.
+                        También recomendamos leer las Políticas de Privacidad de estos proveedores, para entender mejor
+                        como manejan la información suministrada.
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cerrar" onclick={closeSecurityModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

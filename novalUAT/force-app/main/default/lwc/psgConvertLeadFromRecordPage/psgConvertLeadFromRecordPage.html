@@ -1,0 +1,29 @@
+<template>
+        <div class="slds-grid slds-grid_align-end">
+            <lightning-button
+                variant="neutral"
+                label="Mover a siguiente etapa"
+                title="Mover a siguiente etapa"
+                onclick={handleNextStage}
+                class="slds-m-around_medium"
+                disabled={isLoading}
+            ></lightning-button>
+            <lightning-button
+                variant="brand"
+                label="Convertir Lead"
+                title="Convertir Lead"
+                onclick={handleConvertLead}
+                class="slds-m-around_medium"
+                disabled={isLoading}
+            ></lightning-button>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </template>
+        </div>
+
+    <!-- <template if:true={errorMessage}>
+        <div class="slds-text-color_error slds-grid slds-grid_align-end">
+            <p>{errorMessage}</p>
+        </div>
+    </template> -->
+</template>

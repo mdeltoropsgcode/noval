@@ -1,0 +1,871 @@
+<apex:page standardController="Opportunity" renderAs="PDF" applyBodyTag="false" applyHtmlTag="false" showHeader="false" docType="html-5.0">
+    <html>
+        <head>
+            <style>
+                
+            @page {
+                size : portrait;
+                margin: 0.5in 0.5in 0.1in 0.5in;
+                text-align:center; 
+                counter-increment: pages;
+                @bottom-center {
+                    content: element(footer)
+                }
+            }
+            #pageNum, #pageTotal {
+                font-weight:bold;
+            }
+            #pageNum:before {
+                content: counter(page)
+            }
+            #pageTotal:before {
+                content: counter(pages)
+            }
+            .footer {
+                position: fixed;
+                width: 100%;
+                bottom: 0.2in;
+                left: 0px; 
+                text-align:center;
+                font-size:10.5pt;
+            }
+            table.main {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            table.main>tr>th {
+                background-color: #767769;
+                border: 1px solid #4f81bd;
+                color: #fff;
+                padding: 0.1in 0.4in;
+                font-size: 11pt;
+            }
+            table.main>tr>td {
+                border: 1px solid #4f81bd;
+                padding: 0.075in;
+                font-size:10.5pt;
+            }
+            table.main>tr>td>table {
+                width: 100%;
+            }
+            span.checkbox {
+                display: inline-block;
+                width:0.1in;
+                height:0.1in;
+                border:1px solid black;
+                margin-right: 2pt;
+                font-size: 10.5pt;
+                padding:0;
+                font-family: Arial Unicode MS;
+                line-height: 0.25;
+            }
+            table.main>tr.threecol>td {
+                padding:0;
+                border:0;
+            }
+            table.main>tr.threecol>td>table {
+                border-collapse: collapse;
+            }
+            table.main>tr.threecol>td>table>tr>td {
+                border: 1px solid #4f81bd;
+                border-top:0;
+                padding: 0.075in;
+                vertical-align: top;
+                font-size:10.5pt;
+            }
+            </style>
+        </head>
+        <body>
+            
+            
+                         
+             <center><h3>DEBIDA DILIGENCIA/ DUE DILIGENCE</h3></center>
+            <table class="main">
+               <!-- <tr>
+                    <th>1. DATOS DEL PROYECTO / PROJECT DESCRIPTION.</th>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>Proyecto/Project:</b>&nbsp;{!pba__Offer__c.pba__Listing__r.Project__c}</td>
+                                <td><b>Propiedad/Property:</b>&nbsp;{!pba__Offer__c.pba__Listing__r.pba__UnitNumber__c}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>-->
+                <tr>
+                    <th>1. INFORMACIÓN GENERAL / GENERAL INFORMATION.</th>
+                </tr>
+                <tr>
+                    <td><b>Nombre/Name:</b>&nbsp;{!Opportunity.psg_Contact__r.Name}<br/> </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>Nacionalidad/Nationality:</b>&nbsp;{!Opportunity.psg_Contact__r.PSG_Global_Nationality__c}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>¿Posee otra nacionalidad? /Do you have another nationality?</b>&nbsp;
+<!--                                     
+                                    <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Another_Nationality__c='Sí/Yes','X',' ')}</span>Sí/Yes
+                                    <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Another_Nationality__c='No','X',' ')}</span>No; -->
+
+                                     Especificar/If yes, specify:&nbsp;{!Opportunity.psg_Contact__r.psg_Global_Nationality_2__c}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Dirección/Address:</b>&nbsp;{!Opportunity.psg_Contact__r.MailingStreet}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>Ciudad/City:</b>&nbsp;{!Opportunity.psg_Contact__r.MailingCity}</td>
+                                <td><b>Estado/State:</b>&nbsp;{!Opportunity.psg_Contact__r.MailingState}</td>
+                                <td><b>Código postal/Postal code:</b>&nbsp;{!Opportunity.psg_Contact__r.MailingPostalCode}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>País/Country:</b>&nbsp;{!Opportunity.psg_Contact__r.MailingCountry}</td>
+                                <td><b>Teléfono/Phone:</b>&nbsp;{!Opportunity.psg_Contact__r.Phone}</td>
+                                <td><b>Celular:</b>&nbsp;{!Opportunity.psg_Contact__r.MobilePhone}</td>
+                                <!--<td><b>Fax:</b>&nbsp;{!pba__Offer__c.pba__Contact__r.Fax}</td>-->
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>Email:</b>&nbsp;{!Opportunity.psg_Contact__r.Email}</td>
+                                <td><b>Fecha de nacimiento/Date of birth:</b>&nbsp;<apex:outputField value="{!Opportunity.psg_Contact__r.Birthdate}"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><b>Lugar de nacimiento/Place of birth:</b>&nbsp;{!Opportunity.psg_Contact__r.psg_Place_of_Birth__c}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>Estado civil/Marital status:</b>&nbsp;{!Opportunity.psg_Contact__r.psg_Marital_Status__c}</td>
+                                <td><b>Ocupación/Occupation:</b>&nbsp;{!Opportunity.psg_Contact__r.psg_Profession__c}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><b>N.º de pasaporte o cédula/Passport or cedula number:</b>&nbsp;{!Opportunity.psg_Contact__r.psg_ID_Passport__c}</td>
+                             <!--   <td><b>Fecha de expiración/Expiration date:</b>&nbsp;<apex:outputField value="{!Opportunity.psg_Contact__r.Fecha_de_expiracion__c}"/></td>  -->
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Modo de comunicación preferido/Preferred method of communication:</b>
+                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Preferred_Communication_Method__c,'Email'),'X',' ')}</span>Email
+                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Preferred_Communication_Method__c,'Teléfono/Phone'),'X',' ')}</span>Teléfono/Phone
+                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Preferred_Communication_Method__c,'Celular'),'X',' ')}</span>Celular
+                        <br/>
+                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Preferred_Communication_Method__c,'Whatsapp'),'X',' ')}</span>Whatsapp
+                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Preferred_Communication_Method__c,'Fax'),'X',' ')}</span>Fax
+                    </td>
+                </tr>
+                <tr>
+                    <th>2. FUENTE DE INGRESOS / SOURCE OF INCOME.</th>
+                </tr>
+                <tr class="threecol">
+                    <td>
+                        <table>
+                            <tr>
+                                <td width="30%">
+                                    <b>ORIGEN DE LOS FONDOS/SOURCE:</b><br/><br/>
+                                    <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Negocios'),'X',' ')}</span>Negocios/Business activity.<br/>
+                                    <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Recursos propios'),'X',' ')}</span>Recursos propios/ Savings/Family assets.<br/>
+                                    <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Herencia'),'X',' ')}</span>Herencia. Especificar/ Inheritance. Please specify:&nbsp;{!Opportunity.psg_Contact__r.psg_Specify_Inheritance__c}<br/><br/><br/><br/>
+                                    <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Otros'),'X',' ')}</span>Otros. Especificar/ Other. Specify: {!Opportunity.psg_Contact__r.psg_Other_Source_of_Funds__c}<br/>
+                                </td>
+                                <td width="33%">
+                                    <b>ACTIVIDAD PRINCIPAL/MAIN ACTIVITY:</b><br/><br/>
+                                    <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Empleado/Employee','X',' ')}</span>Empleado/Employee.<br/>
+                                    <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Propietario/Owner','X',' ')}</span>Propietario/Owner.<br/>
+                                    <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Jubilado/Retired','X',' ')}</span>Jubilado (indicar última ocupación)/Retired (please indicate your last occupation):&nbsp;{!Opportunity.psg_Contact__r.psg_Last_Occupation__c}<br/><br/><br/>
+                                    <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Otros/Other','X',' ')}</span>Otros. Especificar/ Other. Specify:&nbsp;{!Opportunity.psg_Contact__r.psg_Another_Activity__c}<br/><br/><br/><br/>
+                                </td>
+                                <td>
+                                   <b>DETALLES DE LA EMPRESA/ BUSINESS DETAILS:</b><br/><br/>
+                                    Nombre de la compañía/Business name:&nbsp;{!Opportunity.psg_Contact__r.Account.Name}<br/><br/><br/>
+                                    Actividad/Activity:&nbsp;{!Opportunity.psg_Contact__r.Account.Industry}<br/><br/><br/>
+                                    Teléfono/Phone number:&nbsp;{!Opportunity.psg_Contact__r.Account.Phone}<br/><br/><br/>
+                                    Dirección/Address:&nbsp;{!Opportunity.psg_Contact__r.psg_Company_Address__c}<br/><br/><br/><br/>
+                                    Cargo que ocupa/Position:&nbsp;{!Opportunity.psg_Contact__r.psg_Position_Held__c}<br/><br/><br/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            
+            <div style="page-break-after:always;"></div>
+            <table class="main">
+                <tr>
+                    <th>3. PERSONA POLÍTICAMENTE EXPUESTA (SI APLICA) / POLITICALLY EXPOSED PERSON (IF APPLICABLE).</th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>¿Es o ha sido una persona políticamente expuesta? (PEP) en su país de origen o en otro país? / Are you or have you been a Politically Exposed Person (PEP) in your country of origin or in any other country?</b><br/> 
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Politically_exposed__c ='SI','X',' ')}</span><b>Sí/Yes</b> 
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Politically_exposed__c='No','X',' ')}</span><b>No;</b> Si su respuesta es <b>Sí</b>, por favor marque una cruz en el recuadro apropiado de acuerdo con las siguientes definiciones / If your answer is <b>Yes,</b> please enter a cross in the appropriate box according to the following definitions:<br/>
+                        <br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_PEP_Definitions__c='1','X',' ')}</span>Funcionario superior en el poder ejecutivo, la legislatura, el sistema judicial, la administración pública o las fuerzas militares de cualquier gobierno / Senior official in the executive branch, legislature, court system, public administration or military forces of any government.<br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_PEP_Definitions__c='2','X',' ')}</span>Líder del partido político / Party leader.<br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_PEP_Definitions__c='3','X',' ')}</span>Funcionario superior de una entidad gubernamental, incluida cualquier empresa o negocio organizado por un político de alto perfil para obtener beneficios privados / Senior official of a government entity, including any company or business organized by a high-profile politician for private gain.<br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_PEP_Definitions__c='4','X',' ')}</span>Otro. Por favor especificar / Other. Please, specify:&nbsp;{!Opportunity.psg_Contact__r.psg_Specify_Other_Definition__c}<br/>
+                        <br/>
+                        <b>¿Tiene alguna relación con un político? / Do you have a relationship with a politician? <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Relationship_with_Politician__c='Sí/Yes','X',' ')}</span>Sí/Yes <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Relationship_with_Politician__c='No','X',' ')}</span>No;</b><br/>
+                        Si su respuesta es <b>Sí,</b> por favor marque una cruz en el recuadro correspondiente de acuerdo con las siguientes definiciones que lo vinculan con el político / If your answer is <b>Yes,</b> please enter a cross in the appropriate box according to the following definitions that link you to the politician:<br/>
+                        <br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Link_with_Politician__c='Pariente cercano / Next of kin','X',' ')}</span>Pariente cercano (padre, hermano, cónyuge, hijo, suegros de la persona que actúa como una figura política de alto perfil de cualquier gobierno) / Next of kin (father, brother, spouse, children, in-laws of the person who acts as a high-profile political figure of any government)<br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Link_with_Politician__c='Asociado/ Close associate','X',' ')}</span>Asociado/ Close associate.<br/>
+                        <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Link_with_Politician__c='Otro / Other','X',' ')}</span>Otro. Por favor especificar / Other. Please, specify:&nbsp;{!Opportunity.psg_Contact__r.psg_Other_Link__c}<br/><br/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>4. ¿CÓMO NOS CONOCIÓ? / HOW DID YOU HEAR ABOUT US?</th>
+                </tr>
+                <tr>
+                    <td><span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_How_Heard__c='Cliente / Client','X',' ')}</span>Cliente (nombre) / Client (name): {!Opportunity.psg_Contact__r.Name}<br/><br/></td>
+              </tr>
+                <tr>
+                    <td><span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_How_Heard__c='Motor de búsqueda / Search engine','X',' ')}</span>Motor de búsqueda / Search engine.</td>
+                </tr>
+                <tr>
+                    <td><span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_How_Heard__c='Otros / Other','X',' ')}</span>Otros. Por favor especificar / Other; please specify:&nbsp;{!Opportunity.psg_Contact__r.psg_Specify_Other_How_Heard__c}<br/><br/><br/></td>
+                </tr>
+                <tr>
+                    <th>5. DECLARACIÓN / DECLARATION.</th>
+                </tr>
+                <tr>
+                    <td>
+                        Yo, el abajo firmante, declaro y reconozco lo siguiente / I, the undersigned, declare and acknowledge the following:<br/><br/>
+                        <ul style="margin:0 0 0 0.1in;">
+                            <li>Que no he sido involucrado ni condenado en ninguna parte del mundo por lavado de dinero ni por ningún delito  relacionado con drogas, ni estoy siendo investigado actualmente por el mismo / That I have not been involved nor convicted anywhere in the world for money laundering or any drug-related crime, nor am I being presently investigated for the same.</li>
+                            <li>Que no utilizaré los servicios comerciales de esta empresa para fines de evasión de impuestos ni para ninguna otra actividad ilegal / That I will not use the legal services or legal entities provided by this company for tax evasion purposes nor for any other illegal activity.</li>
+                            <li>Que cumpliré con el pago de todos los impuestos requeridos por mi país de origen y país de residencia como resultado de las transacciones que se llevarán a cabo en la República Dominicana con esta empresa / That I will comply with the payment of all taxes required by my country of origin and country of residence as a result of the transactions that will be carried out in the Dominican Republic through this company.</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            
+            	
+            <div style="page-break-after:always;"></div>
+            
+            <table class="main">
+                <tr>
+                    <td>
+                        Yo, el abajo firmante, declaro bajo pena de perjurio que esta declaración ha sido examinada por mí y que, a mi leal saber y entender, la información proporcionada es verdadera, correcta y completa / I, the undersigned, declare under penalty of perjury that this statement has been examined by me and that to the best of my knowledge, the information provided is true, correct and complete.<br/>
+                        <br/><br/>
+                        <b>NOMBRE / NAME:</b>____________________________________________<br/><br/><br/>
+                        <b>FIRMA / SIGNATURE:</b>____________________________________________<br/><br/><br/>
+                        <b>FECHA / DATE:</b>____________________________________________<br/><br/><br/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>6. IMPORTANTE / IMPORTANT INFORMATION.</th>
+                </tr>
+                <tr>
+                    <td style="margin:0;padding:0;">
+                        <ul style="margin:0 0 0 0.5in;padding:0;">
+                            <li style="padding:0;margin:0;">
+                                Adjunte a este formulario una copia válida de la identificación con foto (pasaporte o cédula) / Please attach to this form a valid copy of the picture identification (passport or cédula).
+                            </li>
+                            <li style="padding:0;margin:0;">
+                                Esta información se mantendrá bajo estricta confidencialidad y se proporcionará únicamente a petición de la autoridad competente en caso de investigación, previo cumplimiento del procedimiento legal correspondiente / This information will be kept under strict confidentiality and provided only upon request of the competent authority in case of investigation, prior compliance with the appropriate legal proceeding.
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="background-color:#1b4d8a;">7. SOLO PARA USO INTERNO / FOR INTERNAL USE ONLY.</th>
+                </tr>
+                <!--<tr>
+                    <td><b>Código cliente:</b>&nbsp;{!pba__Offer__c.pba__Contact__r.Codigo_cliente__c}</td>
+                </tr>-->
+                <tr>
+                    <td><b>Tipo cliente:</b> <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Client_Type__c='Persona física local','X',' ')}</span> Persona física local <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Client_Type__c='Persona física extranjera','X',' ')}</span> Persona física extranjera <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Client_Type__c='Corporativa local','X',' ')}</span> Corporativa local <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Client_Type__c='Corporativo extranjero','X',' ')}</span> Corporativo extranjero</td>
+                </tr>
+                <tr>
+                    <td style="min-height:1.75in;vertical-align:top;"><b>Comentarios:</b><br/><!--{!Opportunity.psg_Contact__r.Comentarios_debida_diligencia__c}--><br/></td>
+                </tr>
+            </table>
+            
+            <!-- FIN DE DOCUMENTO -->
+            
+            <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(Opportunity.psg_Buyer_2__c))}">
+              
+               <!-- INICIO DE DOCUMENTO -->
+                <div style="page-break-after:always;"></div>
+                <center><h3>DEBIDA DILIGENCIA/ DUE DILIGENCE</h3></center>
+                
+                
+  				 <table class="main">	                
+                	
+                     
+                     <!--<tr>
+                        <th>1. DATOS DEL PROYECTO / PROJECT DESCRIPTION.</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Proyecto/Project:&nbsp;{!Opportunity.psg_Project__r.Name}</td>
+                                    <td>Apartamento/Apartment:&nbsp;{!pba__Offer__c.pba__Listing__r.pba__UnitNumber__c}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <th>1. INFORMACIÓN GENERAL / GENERAL INFORMATION.</th>
+                    </tr>
+                    <tr>
+                        <td>Nombre/Name:&nbsp;{!Opportunity.psg_Buyer_2__r.Name}</td>
+                    </tr>
+                    
+                     <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Nacionalidad/Nationality:&nbsp;{!Opportunity.psg_Buyer_2__r.PSG_Global_Nationality__c}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        ¿Posee otra nacionalidad? /Do you have another nationality?&nbsp;
+                                        
+                                        <!-- <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Another_Nationality__c='Si','X',' ')}</span><b>Sí/Yes</b>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Another_Nationality__c='No','X',' ')}</span><b>No;</b>
+                                         -->
+                                        Especificar/If yes, specify:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Global_Nationality_2__c}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                     
+                    <tr>
+                        <td>Dirección/Address:&nbsp;{!Opportunity.psg_Buyer_2__r.MailingStreet}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Ciudad/City:&nbsp;{!Opportunity.psg_Buyer_2__r.MailingCity}</td>
+                                    <td>Estado/State:&nbsp;{!Opportunity.psg_Buyer_2__r.MailingState}</td>
+                                    <td>Código postal/Postal code:&nbsp;{!Opportunity.psg_Buyer_2__r.MailingPostalCode}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>País/Country:&nbsp;{!Opportunity.psg_Buyer_2__r.MailingCountry}</td>
+                                    <td>Teléfono/Phone:&nbsp;{!Opportunity.psg_Buyer_2__r.Phone}</td>
+                                    <td>Celular:&nbsp;{!Opportunity.psg_Buyer_2__r.MobilePhone}</td>
+                                    <td>Fax:&nbsp;{!Opportunity.psg_Buyer_2__r.Fax}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                     
+                     <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Email:&nbsp;{!Opportunity.psg_Buyer_2__r.Email}</td>
+                                    <td>Fecha de nacimiento/Date of birth:&nbsp;<apex:outputField value="{!Opportunity.psg_Buyer_2__r.Birthdate}"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Lugar de nacimiento/Place of birth:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Place_of_Birth__c}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Estado civil/Marital status:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Marital_Status__c}</td>
+                                    <td>Ocupación/Occupation:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Profession__c}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>N.º de pasaporte o cédula/Passport or cedula number:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_ID_Passport__c}</td>
+                                    <td>Fecha de expiración/Expiration date:&nbsp;<apex:outputField value="<!--{!Opportunity.psg_Buyer_2__r.Fecha_de_expiracion__c}-->"/></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                     
+                     <tr>
+                        <td>
+                            Modo de comunicación preferido/Preferred method of communication:
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Preferred_Communication_Method__c='Email','X',' ')}</span>Email
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Preferred_Communication_Method__c='Teléfono/Phone','X',' ')}</span>Teléfono/Phone
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Preferred_Communication_Method__c='Celular','X',' ')}</span>Celular
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Preferred_Communication_Method__c='Fax','X',' ')}</span>Fax 
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>2. FUENTE DE INGRESOS / SOURCE OF INCOME.</th>
+                    </tr>
+                     
+                     
+                    
+                     <tr class="threecol">
+                        <td>
+                            <table>
+                                <tr>
+                                    <td width="30%">
+                                        <b>ORIGEN DE LOS FONDOS/SOURCE:</b><br/><br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_2__r.psg_Source_of_Funds__c,'Negocios'),'X',' ')}</span>Negocios/Business activity.<br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_2__r.psg_Source_of_Funds__c,'Recursos propios'),'X',' ')}</span>Recursos propios/ Savings/Family assets.<br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_2__r.psg_Source_of_Funds__c,'Herencia'),'X',' ')}</span>Herencia. Especificar/ Inheritance. Please specify:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Specify_Inheritance__c}<br/><br/><br/><br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_2__r.psg_Source_of_Funds__c,'Otros'),'X',' ')}</span>Otros. Especificar/ Other. Specify: {!Opportunity.psg_Buyer_2__r.psg_Other_Source_of_Funds__c}<br/>
+                                    </td>
+                                    <td width="33%">
+                                        <b>ACTIVIDAD PRINCIPAL/MAIN ACTIVITY:</b><br/><br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Main_Activity__c='Empleado','X',' ')}</span>       Empleado/Employee.<br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Main_Activity__c='Propietario','X',' ')}</span>   Propietario/Owner.<br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Main_Activity__c='Jubilado','X',' ')}</span>          Jubilado (indicar última ocupación)/Retired (please indicate your last occupation):&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Last_Occupation__c}<br/><br/><br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Main_Activity__c='Otros','X',' ')}</span>           Otros. Especificar/ Other. Specify:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Another_Activity__c}<br/><br/><br/><br/>
+                                    </td>
+                                    <td>
+                                        <b>DETALLES DE LA EMPRESA/ BUSINESS DETAILS:</b><br/><br/>
+                                        Nombre de la compañía/Business name:&nbsp;{!Opportunity.psg_Buyer_2__r.Account.Name}<br/><br/><br/>
+                                        Actividad/Activity:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Business_Activity__c}<br/><br/><br/>
+                                        Teléfono/Phone number:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Company_Phone_Number__c}<br/><br/><br/>
+                                        Dirección/Address:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Company_Address__c}<br/><br/><br/><br/>
+                                        Cargo que ocupa/Position:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Position__c}<br/><br/><br/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>                 
+                
+                 </table>
+                
+                
+                
+                
+
+                <div style="page-break-after:always;"></div>
+                <table class="main">
+                    <tr>
+                        <th>3. PERSONA POLÍTICAMENTE EXPUESTA (SI APLICA) / POLITICALLY EXPOSED PERSON (IF APPLICABLE).</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>¿Es o ha sido una persona políticamente expuesta? (PEP) en su país de origen o en otro país? / Are you or have you been a Politically Exposed Person (PEP) in your country of origin or in any other country?</b><br/> 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Politically_exposed__c='Si','X',' ')}</span><b>Sí/Yes</b> 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Politically_exposed__c='No','X',' ')}</span><b>No;</b> Si su respuesta es <b>Sí</b>, por favor marque una cruz en el recuadro apropiado de acuerdo con las siguientes definiciones / If your answer is <b>Yes,</b> please enter a cross in the appropriate box according to the following definitions:<br/>
+                            <br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_PEP_Definitions__c='1','X',' ')}</span>Funcionario superior en el poder ejecutivo, la legislatura, el sistema judicial, la administración pública o las fuerzas militares de cualquier gobierno / Senior official in the executive branch, legislature, court system, public administration or military forces of any government.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_PEP_Definitions__c='2','X',' ')}</span>Líder del partido político / Party leader.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_PEP_Definitions__c='3','X',' ')}</span>Funcionario superior de una entidad gubernamental, incluida cualquier empresa o negocio organizado por un político de alto perfil para obtener beneficios privados / Senior official of a government entity, including any company or business organized by a high-profile politician for private gain.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_PEP_Definitions__c='4','X',' ')}</span>Otro. Por favor especificar / Other. Please, specify:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Specify_Other_Definition__c}<br/>
+                            <br/>
+                            <b>¿Tiene alguna relación con un político? / Do you have a relationship with a politician? <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Relationship_with_Politician__c='Si','X',' ')}</span>Sí/Yes <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Relationship_with_Politician__c='No','X',' ')}</span>No;</b><br/>
+                            Si su respuesta es <b>Sí,</b> por favor marque una cruz en el recuadro correspondiente de acuerdo con las siguientes definiciones que lo vinculan con el político / If your answer is <b>Yes,</b> please enter a cross in the appropriate box according to the following definitions that link you to the politician:<br/>
+                            <br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Link_with_Politician__c='Pariente cercano','X',' ')}</span>Pariente cercano (padre, hermano, cónyuge, hijo, suegros de la persona que actúa como una figura política de alto perfil de cualquier gobierno) / Next of kin (father, brother, spouse, children, in-laws of the person who acts as a high-profile political figure of any government)<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Link_with_Politician__c='Asociado','X',' ')}</span>Asociado/ Close associate.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Link_with_Politician__c='Otro','X',' ')}</span>Otro. Por favor especificar / Other. Please, specify:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Other_Link__c}<br/><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>4. ¿CÓMO NOS CONOCIÓ? / HOW DID YOU HEAR ABOUT US?</th>
+                    </tr>
+
+                    
+                    
+                    <tr>
+                        <td><span class="checkbox">{!IF(Opportunity.psg_Buyer_2__r.psg_How_Heard__c='Cliente','X',' ')}</span>Cliente (nombre) / Client (name): {!Opportunity.psg_Buyer_2__r.Name}<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td><span class="checkbox">{!IF(Opportunity.psg_Buyer_2__r.psg_How_Heard__c='Motor de búsqueda','X',' ')}</span>Motor de búsqueda / Search engine.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="checkbox">{!IF(Opportunity.psg_Buyer_2__r.psg_How_Heard__c='Otros','X',' ')}</span>Otros. Por favor especificar / Other; please specify:&nbsp;{!Opportunity.psg_Buyer_2__r.psg_Specify_Other_How_Heard__c}<br/><br/><br/></td>
+                    </tr>
+                    
+                    
+                    <tr>
+                        <th>5. DECLARACIÓN / DECLARATION.</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            Yo, el abajo firmante, declaro y reconozco lo siguiente / I, the undersigned, declare and acknowledge the following:<br/><br/>
+                            <ul style="margin:0 0 0 0.1in;">
+                                <li>Que no he sido involucrado ni condenado en ninguna parte del mundo por lavado de dinero ni por ningún delito  relacionado con drogas, ni estoy siendo investigado actualmente por el mismo / That I have not been involved nor convicted anywhere in the world for money laundering or any drug-related crime, nor am I being presently investigated for the same.</li>
+                                <li>Que no utilizaré los servicios comerciales de esta empresa para fines de evasión de impuestos ni para ninguna otra actividad ilegal / That I will not use the legal services or legal entities provided by this company for tax evasion purposes nor for any other illegal activity.</li>
+                                <li>Que cumpliré con el pago de todos los impuestos requeridos por mi país de origen y país de residencia como resultado de las transacciones que se llevarán a cabo en la República Dominicana con esta empresa / That I will comply with the payment of all taxes required by my country of origin and country of residence as a result of the transactions that will be carried out in the Dominican Republic through this company.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                <div style="page-break-after:always;"></div>
+                <table class="main">
+                    <tr>
+                        <td>
+                            Yo, el abajo firmante, declaro bajo pena de perjurio que esta declaración ha sido examinada por mí y que, a mi leal saber y entender, la información proporcionada es verdadera, correcta y completa / I, the undersigned, declare under penalty of perjury that this statement has been examined by me and that to the best of my knowledge, the information provided is true, correct and complete.<br/>
+                            <br/><br/>
+                            <b>NOMBRE / NAME:</b>____________________________________________<br/><br/><br/>
+                            <b>FIRMA / SIGNATURE:</b>____________________________________________<br/><br/><br/>
+                            <b>FECHA / DATE:</b>____________________________________________<br/><br/><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>6. IMPORTANTE / IMPORTANT INFORMATION.</th>
+                    </tr>
+                    <tr>
+                        <td style="margin:0;padding:0;">
+                            <ul style="margin:0 0 0 0.5in;padding:0;">
+                                <li style="padding:0;margin:0;">
+                                    Adjunte a este formulario una copia válida de la identificación con foto (pasaporte o cédula) / Please attach to this form a valid copy of the picture identification (passport or cédula).
+                                </li>
+                                <li style="padding:0;margin:0;">
+                                    Esta información se mantendrá bajo estricta confidencialidad y se proporcionará únicamente a petición de la autoridad competente en caso de investigación, previo cumplimiento del procedimiento legal correspondiente / This information will be kept under strict confidentiality and provided only upon request of the competent authority in case of investigation, prior compliance with the appropriate legal proceeding.
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color:#1b4d8a;">7. SOLO PARA USO INTERNO / FOR INTERNAL USE ONLY.</th>
+                    </tr>
+                    <!--<tr>
+                        <td>Código cliente:&nbsp;{!pba__Offer__c.Buyer_2__r.Codigo_cliente__c}</td>
+                    </tr>-->
+                                       
+                    
+                    <tr>
+                        <td>Tipo cliente: 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Client_Type__c='Persona física local','X',' ')}</span> Persona física local 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Client_Type__c='Persona física extranjera','X',' ')}</span> Persona física extranjera 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Client_Type__c='Corporativa local','X',' ')}</span> Corporativa local 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_2__r.psg_Client_Type__c='Corporativo extranjero','X',' ')}</span> Corporativo extranjero
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="min-height:1.75in;vertical-align:top;">Comentarios:<br/><!--{!pba__Offer__c.Buyer_2__r.Comentarios_debida_diligencia__c}--><br/></td>
+                    </tr>
+                </table>
+                <!-- FIN DE DOCUMENTO -->
+            </apex:outputPanel>
+            <apex:outputPanel layout="none" rendered="{!NOT(ISBLANK(Opportunity.psg_Buyer_3__c))}">
+                <!-- INICIO DE DOCUMENTO -->
+                <div style="page-break-after:always;"></div>
+                <center><h3>DEBIDA DILIGENCIA/ DUE DILIGENCE</h3></center>
+                <table class="main">
+                    <!--<tr>
+                        <th>1. DATOS DEL PROYECTO / PROJECT DESCRIPTION.</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Proyecto/Project:&nbsp;{!pba__Offer__c.pba__Listing__r.Project__c}</td>
+                                    <td>Apartamento/Apartment:&nbsp;{!pba__Offer__c.pba__Listing__r.pba__UnitNumber__c}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <th>1. INFORMACIÓN GENERAL / GENERAL INFORMATION.</th>
+                    </tr>
+                    <tr>
+                        <td>Nombre/Name:&nbsp;{!Opportunity.psg_Buyer_3__r.Name}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Nacionalidad/Nationality:&nbsp;{!Opportunity.psg_Buyer_3__r.PSG_Global_Nationality__c}</td>
+                                </tr>
+                                <tr>
+                                                                      
+                                    <td>
+                                        ¿Posee otra nacionalidad? /Do you have another nationality?&nbsp;
+                                        
+                                        <!-- <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Another_Nationality__c='Yes','X',' ')}</span><b>Sí/Yes</b>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Another_Nationality__c='No','X',' ')}</span><b>No;</b>
+                                         -->
+                                        Especificar/If yes, specify:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Global_Nationality_2__c}
+                                    </td>
+                                    
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dirección/Address:&nbsp;{!Opportunity.psg_Buyer_3__r.MailingStreet}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Ciudad/City:&nbsp;{!Opportunity.psg_Buyer_3__r.MailingCity}</td>
+                                    <td>Estado/State:&nbsp;{!Opportunity.psg_Buyer_3__r.MailingState}</td>
+                                    <td>Código postal/Postal code:&nbsp;{!Opportunity.psg_Buyer_3__r.MailingPostalCode}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>País/Country:&nbsp;{!Opportunity.psg_Buyer_3__r.MailingCountry}</td>
+                                    <td>Teléfono/Phone:&nbsp;{!Opportunity.psg_Buyer_3__r.Phone}</td>
+                                    <td>Celular:&nbsp;{!Opportunity.psg_Buyer_3__r.MobilePhone}</td>
+                                    <td>Fax:&nbsp;{!Opportunity.psg_Buyer_3__r.Fax}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Email:&nbsp;{!Opportunity.psg_Buyer_3__r.Email}</td>
+                                    <td>Fecha de nacimiento/Date of birth:&nbsp;<apex:outputField value="{!Opportunity.psg_Buyer_3__r.Birthdate}"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Lugar de nacimiento/Place of birth:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Place_of_Birth__c}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    
+                                    <td>Estado civil/Marital status:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Marital_Status__c}</td>
+									<td>Ocupación/Occupation:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Profession__c}</td>
+                           
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+
+                                    <td>N.º de pasaporte o cédula/Passport or cedula number:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_ID_Passport__c}</td>
+                                    <td>Fecha de expiración/Expiration date:&nbsp;<apex:outputField value="<!--{!pba__Offer__c.Buyer_3__r.Fecha_de_expiracion__c}-->"/></td>
+
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        
+                        <td>
+                            Modo de comunicación preferido/Preferred method of communication:
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Preferred_Communication_Method__c='Email','X',' ')}</span>Email
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Preferred_Communication_Method__c='Teléfono/Phone','X',' ')}</span>Teléfono/Phone
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Preferred_Communication_Method__c='Celular','X',' ')}</span>Celular
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Preferred_Communication_Method__c='Fax','X',' ')}</span>Fax 
+                        </td>
+       
+                    </tr>
+                    <tr>
+                        <th>2. FUENTE DE INGRESOS / SOURCE OF INCOME.</th>
+                    </tr>
+                    <tr class="threecol">
+                        <td>
+                            <table>
+                                <tr>
+
+                                    
+                                    <td width="30%">
+                                        <b>ORIGEN DE LOS FONDOS/SOURCE:</b><br/><br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_3__r.psg_Source_of_Funds__c,'Negocios'),'X',' ')}</span>Negocios/Business activity.<br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_3__r.psg_Source_of_Funds__c,'Recursos propios'),'X',' ')}</span>Recursos propios/ Savings/Family assets.<br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_3__r.psg_Source_of_Funds__c,'Herencia'),'X',' ')}</span>Herencia. Especificar/ Inheritance. Please specify:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Specify_Inheritance__c}<br/><br/><br/><br/>
+                                        <span class="checkbox">{!If(CONTAINS(Opportunity.psg_Buyer_3__r.psg_Source_of_Funds__c,'Otros'),'X',' ')}</span>Otros. Especificar/ Other. Specify: {!Opportunity.psg_Buyer_3__r.psg_Other_Source_of_Funds__c}<br/>
+                                    </td>
+                                    <td width="33%">
+                                        <b>ACTIVIDAD PRINCIPAL/MAIN ACTIVITY:</b><br/><br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Main_Activity__c='Empleado','X',' ')}</span>Empleado/Employee.<br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Main_Activity__c='Propietario','X',' ')}</span>Propietario/Owner.<br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Main_Activity__c='Jubilado','X',' ')}</span>Jubilado (indicar última ocupación)/Retired (please indicate your last occupation):&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Last_Occupation__c}<br/><br/><br/>
+                                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Main_Activity__c='Otros','X',' ')}</span>Otros. Especificar/ Other. Specify:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Another_Activity__c}<br/><br/><br/><br/>
+                                    </td>             
+                                  
+                                    
+                                    <td>
+                                        <b>DETALLES DE LA EMPRESA/ BUSINESS DETAILS:</b><br/><br/>
+                                        Nombre de la compañía/Business name:&nbsp;{!Opportunity.psg_Buyer_3__r.Account.Name}<br/><br/><br/>
+                                        Actividad/Activity:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Business_Activity__c}<br/><br/><br/>
+                                        Teléfono/Phone number:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Company_Phone_Number__c}<br/><br/><br/>
+                                        Dirección/Address:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Company_Address__c}<br/><br/><br/><br/>
+                                        Cargo que ocupa/Position:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Position__c}<br/><br/><br/>
+                                    </td>
+                                                     
+                                    
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div style="page-break-after:always;"></div>
+                <table class="main">
+                    <tr>
+                        <th>3. PERSONA POLÍTICAMENTE EXPUESTA (SI APLICA) / POLITICALLY EXPOSED PERSON (IF APPLICABLE).</th>
+                    </tr>
+                    <tr>
+                   
+                        
+                        
+                        <td>
+                            <b>¿Es o ha sido una persona políticamente expuesta? (PEP) en su país de origen o en otro país? / Are you or have you been a Politically Exposed Person (PEP) in your country of origin or in any other country?</b><br/> 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Politically_exposed__c='Si','X',' ')}</span><b>Sí/Yes</b> 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Politically_exposed__c='No','X',' ')}</span><b>No;</b> 
+                            Si su respuesta es <b>Sí</b>, por favor marque una cruz en el recuadro apropiado de acuerdo con las siguientes definiciones / If your answer is <b>Yes,</b> please enter a cross in the appropriate box according to the following definitions:<br/><br/>
+                            
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_PEP_Definitions__c='1','X',' ')}</span>Funcionario superior en el poder ejecutivo, la legislatura, el sistema judicial, la administración pública o las fuerzas militares de cualquier gobierno / Senior official in the executive branch, legislature, court system, public administration or military forces of any government.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_PEP_Definitions__c='2','X',' ')}</span>Líder del partido político / Party leader.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_PEP_Definitions__c='3','X',' ')}</span>Funcionario superior de una entidad gubernamental, incluida cualquier empresa o negocio organizado por un político de alto perfil para obtener beneficios privados / Senior official of a government entity, including any company or business organized by a high-profile politician for private gain.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_PEP_Definitions__c='4','X',' ')}</span>Otro. Por favor especificar / Other. Please, specify:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Specify_Other_Definition__c}<br/><br/>
+                        
+                            <b>¿Tiene alguna relación con un político? / Do you have a relationship with a politician?</b> 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Relationship_with_Politician__c='Si','X',' ')}</span>Sí/Yes 
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Relationship_with_Politician__c='No','X',' ')}</span>No;<br/><br/>
+                        
+                            Si su respuesta es <b>Sí</b>, por favor marque una cruz en el recuadro correspondiente de acuerdo con las siguientes definiciones que lo vinculan con el político / If your answer is <b>Yes,</b> please enter a cross in the appropriate box according to the following definitions that link you to the politician:<br/><br/>
+                            
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Link_with_Politician__c='Pariente cercano','X',' ')}</span>Pariente cercano (padre, hermano, cónyuge, hijo, suegros de la persona que actúa como una figura política de alto perfil de cualquier gobierno) / Next of kin (father, brother, spouse, children, in-laws of the person who acts as a high-profile political figure of any government)<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Link_with_Politician__c='Asociado','X',' ')}</span>Asociado/ Close associate.<br/>
+                            <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Link_with_Politician__c='Otro','X',' ')}</span>Otro. Por favor especificar / Other. Please, specify:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Other_Link__c}<br/><br/>
+                        </td>
+     
+                    </tr>
+                    <tr>
+                        <th>4. ¿CÓMO NOS CONOCIÓ? / HOW DID YOU HEAR ABOUT US?</th>
+                    </tr>
+                    
+                    
+                    <tr>
+                        <td><span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_How_Heard__c='Cliente','X',' ')}</span>Cliente (nombre) / Client (name): {!Opportunity.psg_Buyer_3__r.Name}-><br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td><span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_How_Heard__c='Motor de búsqueda','X',' ')}</span>Motor de búsqueda / Search engine.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_How_Heard__c='Otros','X',' ')}</span>Otros. Por favor especificar / Other; please specify:&nbsp;{!Opportunity.psg_Buyer_3__r.psg_Specify_Other_How_Heard__c}<br/><br/><br/></td>
+                    </tr>
+                    
+                    <tr>
+                        <th>5. DECLARACIÓN / DECLARATION.</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            Yo, el abajo firmante, declaro y reconozco lo siguiente / I, the undersigned, declare and acknowledge the following:<br/><br/>
+                            <ul style="margin:0 0 0 0.1in;">
+                                <li>Que no he sido involucrado ni condenado en ninguna parte del mundo por lavado de dinero ni por ningún delito  relacionado con drogas, ni estoy siendo investigado actualmente por el mismo / That I have not been involved nor convicted anywhere in the world for money laundering or any drug-related crime, nor am I being presently investigated for the same.</li>
+                                <li>Que no utilizaré los servicios comerciales de esta empresa para fines de evasión de impuestos ni para ninguna otra actividad ilegal / That I will not use the legal services or legal entities provided by this company for tax evasion purposes nor for any other illegal activity.</li>
+                                <li>Que cumpliré con el pago de todos los impuestos requeridos por mi país de origen y país de residencia como resultado de las transacciones que se llevarán a cabo en la República Dominicana con esta empresa / That I will comply with the payment of all taxes required by my country of origin and country of residence as a result of the transactions that will be carried out in the Dominican Republic through this company.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                <div style="page-break-after:always;"></div>
+                <table class="main">
+                    <tr>
+                        <td>
+                            Yo, el abajo firmante, declaro bajo pena de perjurio que esta declaración ha sido examinada por mí y que, a mi leal saber y entender, la información proporcionada es verdadera, correcta y completa / I, the undersigned, declare under penalty of perjury that this statement has been examined by me and that to the best of my knowledge, the information provided is true, correct and complete.<br/>
+                            <br/><br/>
+                            <b>NOMBRE / NAME:</b>____________________________________________<br/><br/><br/>
+                            <b>FIRMA / SIGNATURE:</b>____________________________________________<br/><br/><br/>
+                            <b>FECHA / DATE:</b>____________________________________________<br/><br/><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>6. IMPORTANTE / IMPORTANT INFORMATION.</th>
+                    </tr>
+                    <tr>
+                        <td style="margin:0;padding:0;">
+                            <ul style="margin:0 0 0 0.5in;padding:0;">
+                                <li style="padding:0;margin:0;">
+                                    Adjunte a este formulario una copia válida de la identificación con foto (pasaporte o cédula) / Please attach to this form a valid copy of the picture identification (passport or cédula).
+                                </li>
+                                <li style="padding:0;margin:0;">
+                                    Esta información se mantendrá bajo estricta confidencialidad y se proporcionará únicamente a petición de la autoridad competente en caso de investigación, previo cumplimiento del procedimiento legal correspondiente / This information will be kept under strict confidentiality and provided only upon request of the competent authority in case of investigation, prior compliance with the appropriate legal proceeding.
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="background-color:#1b4d8a;">7. SOLO PARA USO INTERNO / FOR INTERNAL USE ONLY.</th>
+                    </tr>
+                    <!--<tr>
+                        <td>Código cliente:&nbsp;{!pba__Offer__c.Buyer_3__r.Codigo_cliente__c}</td>
+                    </tr>-->
+
+                    
+                    <td>
+                        Tipo cliente:
+                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Client_Type__c='Persona física local','X',' ')}</span> Persona física local
+                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Client_Type__c='Persona física extranjera','X',' ')}</span> Persona física extranjera
+                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Client_Type__c='Corporativa local','X',' ')}</span> Corporativa local
+                        <span class="checkbox">{!If(Opportunity.psg_Buyer_3__r.psg_Client_Type__c='Corporativo extranjero','X',' ')}</span> Corporativo extranjero
+                     </td>
+
+                    <tr>
+                        <td style="min-height:1.75in;vertical-align:top;">Comentarios:<br/><!--{!If(Opportunity.psg_Buyer_3__r.Comentarios_debida_diligencia__c}--><br/></td>
+                    </tr>
+                                       
+                </table>
+                <!-- FIN DE DOCUMENTO -->          
+            
+			 </apex:outputPanel>
+                   
+            <div class="footer">
+                <p>
+                    Page <span id="pageNum"/> of <span id="pageTotal"/>
+                </p>
+            </div>            
+
+        </body>
+    </html>
+</apex:page>

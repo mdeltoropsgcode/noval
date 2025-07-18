@@ -1,0 +1,49 @@
+<template>
+    <div class="slds-card slds-p-top_none">
+        <div class="slds-card__body slds-p-horizontal_medium">
+            <div class="slds-path">
+                <div class="slds-grid slds-path__track">
+                    <div class="slds-grid slds-path__scroller-container">
+                        <div class="slds-path__scroller">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal"
+                                    aria-labelledby="slds-path__stage-name">
+
+                                    <template for:each={statuses} for:item="status">
+                                        <li key={status.index} class={status.className} role="presentation">
+                                            <a class="slds-path__link" data-index={status.index} role="option"
+                                                tabindex="-1" onclick={handleStatusClick}>
+                                                <span class="slds-path__stage">
+                                                    <lightning-icon aria-hidden="true" if:true={status.showCheckIcon}
+                                                        class="checkmark slds-icon-utility-check slds-icon_container slds-icon_x-small slds-align_absolute-center"
+                                                        icon-name="utility:check" size="xx-small">
+                                                    </lightning-icon>
+                                                </span>
+                                                <span class="slds-path__title">{status.label}</span>
+                                            </a>
+                                        </li>
+                                    </template>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-path__action">
+                                                <button class="slds-button slds-button_brand slds-path__mark-complete" onclick={updateStatus}
+                            disabled={isButtonDisabled}>
+                            <template if:true={showSpinner}>
+                                <lightning-spinner alternative-text="Updating status..." size="small"></lightning-spinner>
+                            </template>
+                            <template if:false={showSpinner}>
+                                <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                </svg>
+                            </template>
+                            {buttonText}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

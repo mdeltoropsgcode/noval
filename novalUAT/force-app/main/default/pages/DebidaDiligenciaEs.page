@@ -1,0 +1,554 @@
+<apex:page standardController="Opportunity" renderAs="PDF" applyBodyTag="false" applyHtmlTag="false" showHeader="false"
+    docType="html-5.0">
+    <html>
+
+    <head>
+        <style>
+            @page {
+                size: portrait;
+                margin: 0.5in 0.5in 0.1in 0.5in;
+                text-align: center;
+                counter-increment: pages;
+
+                @bottom-center {
+                    content: element(footer)
+                }
+            }
+
+            body {
+                font-family: sans-serif, Arial Unicode MS;
+            }
+
+            #pageNum,
+            #pageTotal {
+                font-weight: bold;
+            }
+
+            #pageNum:before {
+                content: counter(page)
+            }
+
+            #pageTotal:before {
+                content: counter(pages)
+            }
+
+            .footer {
+                position: fixed;
+                width: 100%;
+                bottom: 0.2in;
+                left: 0px;
+                text-align: center;
+                font-size: 10.5pt;
+            }
+
+            span.checkbox {
+                display: inline-block;
+                width: 0.1in;
+                height: 0.1in;
+                border: 1px solid black;
+                margin-right: 2pt;
+                font-size: 10.5pt;
+                padding: 0;
+                font-family: Arial Unicode MS;
+                line-height: 0.25;
+            }
+
+            h4 {
+                margin: 10px 0;
+            }
+
+            /* Styles for personal information table */
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            table>tr>th {
+                font-weight: normal;
+                font-size: medium;
+                border: .7px solid #000000;
+                background-color: #ededed;
+                padding: 1px 8px;
+                font-size: 11pt;
+                align-content: start;
+
+            }
+
+            table>tr>td {
+                border: .7px solid #000000;
+                padding: 1px 8px;
+                font-size: 10.5pt;
+            }
+
+            .inner-table {
+                margin: 0;
+                width: 100%;
+                border-collapse: collapse;
+                border: 0;
+            }
+
+            .inner-table>tr>td {
+                margin: 0;
+                border: 0;
+                padding: 0;
+            }
+
+            .inner-table>tr>th {
+                border: 0;
+                border-right: .7px #000000 solid;
+                border-left: .7px #000000 solid;
+                margin: 0;
+            }
+
+            .complementary-table>tr>th {
+                border-top: 0;
+            }
+
+            .complementary-table>tr>td {
+                border-top: 0;
+            }
+
+            .border-none {
+                border: none;
+            }
+
+            .border-y {
+                border-right: .7px solid black !important;
+                border-left: .7px solid black !important;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <table style="margin-bottom: 30px;">
+            <tr>
+                <td style="border: 0;">
+                    <h2 style="font-weight: 900; margin-bottom: 10px; margin-top: 0;">FORMULARIO
+                        <br />
+                        CONOZCA A SU CLIENTE
+                    </h2>
+                    <div>PERSONA FÍSICA</div>
+                </td>
+                <td style="border: 0; text-align: right;">
+                    <img style="width: 100px; height: auto;" src="{!$Resource.NovalLogo}" alt="Noval logo"
+                        align="right" />
+                </td>
+            </tr>
+        </table>
+
+        <!-- Tabla de la primera seccion informacion personal -->
+        <h4>1. Información personal:</h4>
+
+        <table class="table-personal-inf">
+            <tr>
+                <th style="width: 30%; height: 40px;">Nombre(s) y apellido(s)</th>
+                <td style="width: 70%;">{!Opportunity.psg_Contact__r.Name}</td>
+
+            </tr>
+            <tr>
+                <th style="width: 30%;">Cédula o pasaporte:</th>
+                <td style="width: 70%; padding: 0;">
+                    <table class="inner-table">
+                        <tr>
+                            <td style="width: 40%; padding: 1px 8px;">{!Opportunity.psg_Contact__r.psg_ID_Passport__c}</td>
+                            <th style="width: 30%;">Fecha de Vencimiento:</th>
+                            <td style="width: 30%; padding: 1px 8px;"><apex:outputText value="{0,date,dd/MM/yyyy}">
+                                <apex:param value="{!Opportunity.CloseDate}" />
+                            </apex:outputText></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 30%;">Nacionalidad</th>
+                <td style="width: 70%; padding: 0;">
+                    <table class="inner-table">
+                        <tr>
+                            <td style="width: 40%; padding: 1px 8px;">{!Opportunity.psg_Contact__r.PSG_Global_Nationality__c}</td>
+                            <th style="width: 30%;">Fecha de Nacimiento:</th>
+                            <td style="width: 30%; padding: 1px 8px;"><apex:outputText value="{0,date,dd/MM/yyyy}">
+                                <apex:param value="{!Opportunity.psg_Contact__r.Birthdate}" /> </apex:outputText></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 30%;">¿Es ciudadano de otro
+                    país?</th>
+                <td style="width: 70%; padding: 0;">
+                    <table class="inner-table">
+                        <tr>
+                            <td style="width: 30%; padding: 1px 8px;" class="border-y">Indique el país:</td>
+                            <td style="width: 30%; padding: 1px 8px;">{!Opportunity.psg_Contact__r.psg_Global_Nationality_2__c}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <!-- Continuacion de la 1era Tabla  -->
+        <table class="complementary-table">
+            <tr>
+                <td>
+                    <table class="inner-table">
+                        <tr>
+                            <td style="border-top: 0;">
+                                Estado Civil:
+                            </td>
+                            <td style="border-top: 0;">
+                                <span class="checkbox">
+                                    {!If(Opportunity.psg_Contact__r.psg_Marital_Status__c='Soltero','X','')}
+                                </span> Soltero(a)
+                            </td>
+                            <td style="border-top: 0;">
+                                <span class="checkbox">
+                                    {!If(Opportunity.psg_Contact__r.psg_Marital_Status__c='Viudo','X','')}
+                                </span> Viudo(a)
+                            </td>
+                            <td style="border-top: 0;">
+                                <span class="checkbox">
+                                    {!If(Opportunity.psg_Contact__r.psg_Marital_Status__c='Casado','X','')}
+                                </span> Casado(a)
+                            </td>
+                            <td style="border-top: 0;">
+                                <span class="checkbox">
+                                    {!If(Opportunity.psg_Contact__r.psg_Marital_Status__c='Unión libre','X','')}
+                                </span> Unión libre(a)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Dirección: {!Opportunity.psg_Contact__r.MailingStreet}</td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="inner-table">
+                        <tr>
+                            <td>Ciudad: {!Opportunity.psg_Contact__r.MailingCity}</td>
+                            <td>Estado: {!Opportunity.psg_Contact__r.MailingState}</td>
+                            <td>Cod. Postal: {!Opportunity.psg_Contact__r.MailingPostalCode}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="inner-table" style="border-bottom: 0;">
+                        <tr>
+                            <td>La vivienda es: </td>
+                            <td>Propia: <span class="checkbox">-----------</span></td>
+                            <td>Alquilada: <span class="checkbox">-----------</span></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 0;">
+                    <table>
+                        <tr>
+                            <th style="width: 33%;">No. celular</th>
+                            <th style="width: 33%;">Teléfono</th>
+                            <th>Correo electrónico</th>
+                        </tr>
+                        <tr>
+                            <td style="width: 33%;">{!Opportunity.psg_Contact__r.MobilePhone}</td>
+                            <td style="width: 33%;">{!Opportunity.psg_Contact__r.Phone}</td>
+                            <td>{!Opportunity.psg_Contact__r.MailingCountry}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 0;">
+                    <table class="complementary-table">
+                        <tr>
+                            <th style="width: 33%; ">Profesión: </th>
+                            <th> Detalles de la ocupación: </th>
+                        </tr>
+                        <tr>
+                            <td style="width: 33%; border-bottom: 0;">{!Opportunity.psg_Contact__r.psg_Profession__c}
+                            </td>
+                            <td style="border-bottom: 0;">----------</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 2  -->
+
+        <h4 style="margin-top: 30px;">2. Datos del Cónyuge (Si aplica):</h4>
+
+        <table>
+            <tr>
+                <td style="width: 50%;">Nombre(s): {!Opportunity.psg_Contact__r.psg_Spouse__c}</td>
+                <td>Cédula/pasaporte: -----------</td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">Apellidos: ----------</td>
+                <td>Lugar de Nacimiento: ------------</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>Nacionalidad: -----------</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="width: 50%;">Profesión: ----------</td>
+                <td>Detalles de la ocupación: ----------</td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 3 -->
+        <h4 style="margin-top: 30px;">3. Fuente de ingresos:</h4>
+
+        <table>
+            <tr>
+                <th>a) Origen de los fondos:</th>
+                <th>b) Actividad principal:</th>
+                <th>c) Detalles de la empresa:</th>
+            </tr>
+            <tr>
+                <td>Negocios <span
+                        class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Negocios/Business
+                        activity'),'X',' ')}</span></td>
+                <td>Empleado privado <span
+                        class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Empleado/Employee','X','
+                        ')}</span> </td>
+                <td>Denominación/Nombre {!Opportunity.psg_Contact__r.Account.Name}</td>
+            </tr>
+            <tr>
+                <td>Recursos propios <span
+                        class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Recursos
+                        propios/Savings/Family assets '),'X',' ')}</span></td>
+                <td>Empleado público <span
+                        class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Empleado publico/Public
+                        Employee','X',' ')}</span></td>
+                <td>Actividad {!Opportunity.psg_Contact__r.psg_Business_Activity__c}</td>
+            </tr>
+            <tr>
+                <td>Herencia <span
+                        class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Herencia/Inheritance'),'X','
+                        ')}</span></td>
+                <td>Propietario <span
+                        class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Propietario/Owner','X','
+                        ')}</span> </td>
+                <td>Teléfono {!Opportunity.psg_Contact__r.psg_Company_Phone_Number__c}</td>
+            </tr>
+            <tr>
+                <td>Otros <span
+                        class="checkbox">{!If(CONTAINS(Opportunity.psg_Contact__r.psg_Source_of_Funds__c,'Otros/Other'),'X','
+                        ')}</span></td>
+                <td>Jubilado <span
+                        class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Jubilado/Retired','X','
+                        ')}</span> </td>
+                <td rowspan="2">Dirección {!Opportunity.psg_Contact__r.psg_Company_Address__c}</td>
+            </tr>
+            <tr>
+                <td rowspan="3">Especificar {!Opportunity.psg_Contact__r.psg_Other_Source_of_Funds__c}</td>
+                <td>Indicar ultima ocupación {!Opportunity.psg_Contact__r.psg_Last_Occupation__c}</td>
+            </tr>
+            <tr>
+                <td>Otros <span
+                        class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Main_Activity__c='Otros/Other','X','
+                        ')}</span> </td>
+                <td>Supervisor --------</td>
+            </tr>
+            <tr>
+                <td>Especificar -------</td>
+                <td>Cargo que ocupa {!Opportunity.psg_Contact__r.psg_Position_Held__c}</td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 4 -->
+        <h4 style="margin-top: 30px;">4. Datos de la reserva del inmueble(s):</h4>
+        <table>
+            <tr>
+                <td>Proyecto: {!Opportunity.Name}</td>
+                <td>Unidad: -------</td>
+                <td>Monto aportado: ---------</td>
+            </tr>
+        </table>
+
+
+        <!-- Add a page break -->
+        <div style="page-break-after: always;"></div>
+
+
+        <!-- Tabla no 5 -->
+        <h4>5. Referencia Bancaria Principal:</h4>
+        <table>
+            <tr>
+                <td>Nombre de la Entidad Bancaria: ---------</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>Cuenta No.: {!Opportunity.psg_Contact__r.psg_Account_Number__c}</td>
+                <td>Cuenta de Ahorro <span class="checkbox">------</span> Cuenta Corriente <span class="checkbox">------</span></td>
+            </tr>
+            <tr>
+                <td>Sucursal: -----</td>
+                <td>Teléfono: -------</td>
+            </tr>
+        </table>
+
+        <!-- Tabla no 5.1 -->
+        <h4 style="margin-top: 30px;">5.1 Referencia Comercial:</h4>
+        <table>
+            <tr>
+                <td>Nombre de la Entidad Comercial: -----</td>
+                <td>Nombre de contacto comercial: ---------</td>
+            </tr>
+            <tr>
+                <td>Dirección: -------</td>
+                <td>Teléfono: ---------</td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 5.2 -->
+        <h4 style="margin-top: 30px;">5.2 Referencia Laboral:</h4>
+        <table>
+            <tr>
+                <th>Nombre y apellido</th>
+                <th>Ocupación</th>
+                <th>Teléfono</th>
+            </tr>
+            <tr>
+                <td>---------</td>
+                <td>---------</td>
+                <td>---------</td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 6 -->
+        <h4 style="margin-top: 30px;">6. Personas Expuestas politicamente (PEP's):</h4>
+        <table>
+            <tr>
+                <td>
+                    ¿Tiene un cargo político o ha ocupado un cargo político en los últimos 3 años?
+                    (cargo público, en un partido o movimiento político). SI cambiar NO cambiar
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ¿Tiene algún parentesco con un funcionario o exfuncionario público o de algún partido político en
+                    los últimos 3 años? SI <span class="checkbox">{!If(Opportunity.psg_Contact__r.psg_Link_with_Politician__c='Pariente cercano / Next of kin','X',' ')}</span> NO <span class="checkbox">------</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Indique el parentesco: ------</td>
+            </tr>
+            <tr>
+                <td>Indique el nombre del funcionario o exfuncionario: ----------</td>
+            </tr>
+            <tr>
+                <td>Indique el cargo: ----------</td>
+            </tr>
+            <tr>
+                <td>Indique la institución o partido político: ----------</td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 7 -->
+        <h4 style="margin-top: 30px;">7. ¿Como nos conoció?</h4>
+        <table>
+            <tr>
+                <td>Referido por: {!If(Opportunity.psg_Contact__r.psg_How_Heard__c='Cliente / Client','Cliente',' ')}</td>
+            </tr>
+            <tr>
+                <td>Motor de búsqueda: {!If(Opportunity.psg_Contact__r.psg_How_Heard__c='Motor de búsqueda / Search engine','Motor de búsqueda',' ')}</td>
+            </tr>
+            <tr>
+                <td>Otros, favor especificar: {!If(Opportunity.psg_Contact__r.psg_How_Heard__c='Otros / Other','Otros',' ')}</td>
+            </tr>
+        </table>
+
+
+        <!-- Tabla no 7 -->
+        <h4 style="margin-top: 30px;">8. Declaración</h4>
+        <table>
+            <tr>
+                <td style="padding: 10px;">Para cumplir con la Ley 155-17 contra el lavado de activos y el
+                    financiamiento del terrorismo en la
+                    Republica Dominicana sus reglamentos y normas, yo, el firmante, declaro y reconozco lo siguiente:
+                    Que no he sido involucrado ni condenado en ninguna parte del mundo por el lavado de dinero o
+                    cualquier delito relacionado con las drogas, ni estoy siendo investigado actualmente por el mismo.
+                    Que cumpliré con el pago de todos los impuestos requeridos por mi país de origen y país de
+                    residencia como resultado de las transacciones que se llevaran a cabo en Republica Dominicana a
+                    través de la empresa. Que los recursos que manejo o mis recursos propios provienen de las fuentes
+                    indicadas en la sección (Detalles de ingresos). Yo, el abajo firmante, declaro bajo pena de perjurio
+                    que esta declaración ha sido examinada por mí y que, y la considero como cierta, correcta y
+                    completa.</td>
+            </tr>
+        </table>
+
+        <!-- Seccion de firma -->
+        <div style="font-weight: bold; margin-left: 30px; margin-top: 10px;">
+            <p>
+                Nombre y Apellido: _____________________________________
+            </p>
+            <p>
+                Firma: ______________________________ Fecha: _________________
+            </p>
+        </div>
+
+
+        <!-- Add a page break -->
+        <div style="page-break-after: always;"></div>
+
+
+        <!-- Seccion no 9 -->
+        <h4 style="margin-top: 30px;">9. Anexar los siguientes documentos:</h4>
+        <div style="border: .7px solid black; padding: 5px;">
+            <div><span class="checkbox"></span> Copia de Cédula o Pasaporte</div>
+            <div><span class="checkbox"></span> Copia de Cedula o Pasaporte (Cónyuge, si aplica)</div>
+            <div><span class="checkbox"></span> Constancia Laboral (Si aplica)</div>
+            <div><span class="checkbox"></span> Certificación de Negocio Propio (Si aplica)</div>
+            <div><span class="checkbox"></span> Factura de Servicios</div>
+
+            <p style="margin-top: 30px; font-size: small">* Se podrían solicitar requisitos adicionales, el potencial cliente cuenta con
+                un tiempo aproximado
+                de una (1) semana para completar los documentos pendientes.
+            </p>
+        </div>
+
+
+        <!-- Seccion no 9 -->
+        <table style="margin-top: 30px;">
+            <tr>
+                <th style="background-color: #ffea00;">10. Uso interno (NOVAL SRL)</th>
+            </tr>
+            <tr>
+                <td>Código del cliente: -------</td>
+            </tr>
+            <tr>
+                <td>Motor de búsqueda: -------</td>
+            </tr>
+            <tr>
+                <td>Otros, Favor especificar: -------</td>
+            </tr>
+        </table>
+
+
+        <div class="footer">
+            <p>
+                Página <span id="pageNum" /> de <span id="pageTotal" />
+            </p>
+        </div>
+
+    </body>
+
+    </html>
+</apex:page>
